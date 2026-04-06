@@ -543,7 +543,7 @@ function analyzePosture(upper, lower) {
     if(now - lastAlertTime > 7000 && document.getElementById('chkBadPosture').checked) {
       lastAlertTime = now;
       alertCount++;
-      sendNotification('alert', '⚠️ Bad posture detected', `Spinal divergence ${diff.toFixed(1)}° exceeds ${thresh}° threshold`);
+      sendNotification('alert', 'Bad posture detected', `Spinal divergence ${diff.toFixed(1)}° exceeds ${thresh}° threshold`);
     }
   } else if(diff > thresh * 0.6) {
     status.className = 'posture-status warn';
@@ -554,7 +554,7 @@ function analyzePosture(upper, lower) {
     const now = Date.now();
     if(now - lastAlertTime > 7000 && document.getElementById('chkBadPosture').checked) {
       lastAlertTime = now;
-      sendNotification('warn', '⚡ Posture warning', `Divergence ${diff.toFixed(1)}° is approaching the ${thresh}° threshold`);
+      sendNotification('warn', 'Posture warning', `Divergence ${diff.toFixed(1)}° is approaching the ${thresh}° threshold`);
     }
   } else {
     status.className = 'posture-status';
@@ -566,7 +566,7 @@ function analyzePosture(upper, lower) {
   if(!isBad && wasPostureBad) {
     wasPostureBad = false;
     if(document.getElementById('chkGoodReturn').checked) {
-      sendNotification('ok', '✅ Posture corrected', 'Your spine is back in alignment');
+      sendNotification('ok', 'Posture corrected', 'Your spine is back in alignment');
     }
   }
   packets++;
@@ -609,7 +609,7 @@ function toggleDemo() {
   if(demoTimer) {
     clearInterval(demoTimer); demoTimer = null;
     demoPhase = 0;
-    document.getElementById('demoBtn').textContent = '⚡ Demo Mode';
+    document.getElementById('demoBtn').textContent = 'Demo Mode';
     document.getElementById('statusBadge').className = 'badge badge-disconnected';
     document.getElementById('statusBadge').textContent = '● DISCONNECTED';
     document.getElementById('liveDot').style.opacity = '.3';

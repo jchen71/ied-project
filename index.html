@@ -26,7 +26,6 @@
   * { margin:0; padding:0; box-sizing:border-box; }
   body { background:var(--bg); color:var(--text); font-family:'Inter',sans-serif; min-height:100vh; }
 
-  /* ── TOPBAR ── */
   .topbar {
     background:var(--surface); border-bottom:1px solid var(--border);
     padding:0 24px; height:56px;
@@ -45,10 +44,8 @@
   .badge-disconnected { background:rgba(248,81,73,.1);  color:var(--red);    border-color:#6e2a27; }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
 
-  /* ── LAYOUT ── */
   .main { max-width:1100px; margin:0 auto; padding:24px; display:flex; flex-direction:column; gap:20px; }
 
-  /* ── CARDS ── */
   .card { background:var(--surface); border:1px solid var(--border); border-radius:10px; overflow:hidden; }
   .card-header {
     padding:14px 18px; border-bottom:1px solid var(--border);
@@ -58,7 +55,6 @@
   .card-title { font-size:.78rem; font-weight:600; color:var(--text-dim); text-transform:uppercase; letter-spacing:1px; display:flex; align-items:center; gap:8px; }
   .card-body { padding:18px; }
 
-  /* ── BUTTONS ── */
   .btn {
     font-family:'Inter',sans-serif; font-size:.82rem; font-weight:500;
     padding:8px 18px; border-radius:6px; border:1px solid;
@@ -74,7 +70,6 @@
   .btn-ghost:hover { background:var(--surface2); color:var(--text); }
   .btn-sm { padding:5px 12px; font-size:.76rem; }
 
-  /* ── CONNECTION ── */
   .connect-inner { display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-top:10px; }
   .device-display {
     font-family:'JetBrains Mono',monospace; font-size:.82rem;
@@ -90,11 +85,9 @@
   }
   .perm-banner.show { display:flex; }
 
-  /* ── POSTURE DASHBOARD ── */
   .posture-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
   @media(max-width:700px) { .posture-grid { grid-template-columns:1fr; } }
 
-  /* ── SPINE VIEWER ── */
   .spine-panel { display:flex; align-items:center; justify-content:center; gap:28px; padding:20px 10px; }
   .spine-svg-wrap { position:relative; }
   .spine-info { flex:1; display:flex; flex-direction:column; gap:14px; }
@@ -127,10 +120,31 @@
   .diff-bar-track { height:6px; background:var(--surface2); border-radius:3px; position:relative; }
   .diff-bar-fill  { height:100%; border-radius:3px; background:var(--green); transition:width .4s, background .4s; }
 
-  /* ── CHART ── */
   .chart-wrap { height:180px; position:relative; }
 
-  /* ── SIM CONTROLS ── */
+  /* ── HISTORY PANEL ── */
+  .history-meta {
+    display:flex; justify-content:space-between; align-items:flex-end;
+    margin-bottom:10px;
+  }
+  .history-score-block { display:flex; flex-direction:column; gap:2px; }
+  .history-score-label { font-size:.68rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:.8px; }
+  .history-score-val {
+    font-family:'JetBrains Mono',monospace; font-size:2rem; font-weight:500;
+    line-height:1; transition:color .4s;
+  }
+  .history-score-val.good { color:var(--green); }
+  .history-score-val.warn { color:var(--orange); }
+  .history-score-val.bad  { color:var(--red); }
+  .history-trend {
+    font-size:.72rem; color:var(--text-muted);
+    display:flex; flex-direction:column; align-items:flex-end; gap:3px;
+  }
+  .trend-val { font-family:'JetBrains Mono',monospace; font-size:.82rem; }
+  .trend-up   { color:var(--green); }
+  .trend-down { color:var(--red); }
+  .trend-flat { color:var(--text-muted); }
+
   .sim-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
   @media(max-width:600px) { .sim-grid { grid-template-columns:1fr; } }
 
@@ -149,7 +163,6 @@
   }
   input[type=range]:disabled { opacity:.35; cursor:not-allowed; }
 
-  /* ── NOTIFICATION LOG ── */
   .notif-list { display:flex; flex-direction:column; gap:6px; max-height:220px; overflow-y:auto; }
   .notif-list::-webkit-scrollbar { width:4px; }
   .notif-list::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
@@ -174,7 +187,6 @@
   .notif-detail { color:var(--text-dim); margin-top:2px; font-size:.72rem; }
   .empty-state { text-align:center; padding:30px; color:var(--text-muted); font-size:.82rem; }
 
-  /* ── TOAST ── */
   .toast-container { position:fixed; top:66px; right:20px; z-index:999; display:flex; flex-direction:column; gap:8px; pointer-events:none; }
   .toast {
     background:var(--surface); border:1px solid var(--border); border-radius:10px;
@@ -187,7 +199,6 @@
   .toast.warn  { border-left-color:var(--orange); }
   .toast.ok    { border-left-color:var(--green); }
   @keyframes toastIn { from{opacity:0;transform:translateX(16px) scale(.95)} to{opacity:1;transform:none} }
-  .toast-icon  { font-size:1.1rem; flex-shrink:0; margin-top:1px; }
   .toast-body  { flex:1; }
   .toast-title { font-size:.85rem; font-weight:600; margin-bottom:3px; }
   .toast-msg   { font-size:.77rem; color:var(--text-dim); }
@@ -211,10 +222,10 @@
 <div class="main">
 
   <div class="card">
-    <div class="card-header"><span class="card-title">🔵 Bluetooth Connection</span></div>
+    <div class="card-header"><span class="card-title">Bluetooth Connection</span></div>
     <div class="card-body">
       <div class="perm-banner" id="permBanner">
-        <span>⚠️</span>
+        <span>⚠</span>
         <div>Allow notifications to receive posture alerts in the background.
           <button class="btn btn-ghost btn-sm" style="margin-left:10px;" onclick="requestNotifPerm()">Grant permission</button>
         </div>
@@ -240,13 +251,11 @@
       <span style="font-size:.72rem;color:var(--text-muted);" id="packetCount">0 packets</span>
     </div>
     <div class="card-body">
-
       <div class="posture-grid">
 
         <div>
           <div style="font-size:.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;">Spine view — side profile</div>
           <div class="spine-panel">
-
             <div class="spine-svg-wrap">
               <svg id="spineSvg" width="140" height="270" viewBox="-25 0 160 270">
                 <line x1="55" y1="10" x2="55" y2="250" stroke="#30363d" stroke-width="1" stroke-dasharray="4,4"/>
@@ -264,7 +273,6 @@
                 <text id="lowerLabel" x="4" y="175" font-size="8" fill="#3fb950" font-family="JetBrains Mono,monospace">lower</text>
               </svg>
             </div>
-
             <div class="spine-info">
               <div class="angle-row">
                 <div class="angle-label">Upper back (T1–T6)</div>
@@ -292,24 +300,31 @@
                 <div class="status-sub" id="statusSub">Keep it up!</div>
               </div>
             </div>
-
           </div>
         </div>
 
+        <!-- POSTURE HISTORY CHART -->
         <div>
-          <div style="font-size:.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;">Angle history — last 60 readings</div>
+          <div class="history-meta">
+            <div class="history-score-block">
+              <div class="history-score-label">Current score</div>
+              <div class="history-score-val good" id="historyScore">—</div>
+            </div>
+            <div class="history-trend">
+              <span style="font-size:.68rem;text-transform:uppercase;letter-spacing:.8px;">Trend vs. last 10</span>
+              <span class="trend-val trend-flat" id="historyTrend">—</span>
+            </div>
+          </div>
           <div class="chart-wrap">
             <canvas id="angleChart"></canvas>
           </div>
           <div style="display:flex;gap:16px;margin-top:10px;font-size:.72rem;color:var(--text-dim);">
-            <span><span style="display:inline-block;width:10px;height:3px;background:#58a6ff;border-radius:2px;vertical-align:middle;margin-right:5px;"></span>Upper back</span>
-            <span><span style="display:inline-block;width:10px;height:3px;background:#3fb950;border-radius:2px;vertical-align:middle;margin-right:5px;"></span>Lower back</span>
-            <span><span style="display:inline-block;width:10px;height:3px;background:#f0883e;border-radius:2px;border-style:dashed;vertical-align:middle;margin-right:5px;"></span>Threshold</span>
+            <span><span style="display:inline-block;width:10px;height:3px;background:#3fb950;border-radius:2px;vertical-align:middle;margin-right:5px;"></span>Posture score (0–100)</span>
+            <span><span style="display:inline-block;width:10px;height:3px;background:#58a6ff;border-radius:2px;vertical-align:middle;margin-right:5px;border-style:dashed;"></span>10-reading average</span>
           </div>
         </div>
 
       </div>
-
     </div>
   </div>
 
@@ -317,7 +332,6 @@
     <div class="card-header"><span class="card-title">Simulation &amp; Alert Settings</span></div>
     <div class="card-body">
       <div class="sim-grid">
-
         <div style="display:flex;flex-direction:column;gap:14px;">
           <div class="ctrl-block">
             <div class="ctrl-label">Upper back angle <span id="upperSliderVal">0°</span></div>
@@ -335,7 +349,6 @@
             <input type="range" id="threshSlider" min="5" max="30" value="10" step="1" oninput="updateThresh()">
           </div>
         </div>
-
         <div style="display:flex;flex-direction:column;gap:14px;">
           <div>
             <div style="font-size:.78rem;color:var(--text-dim);margin-bottom:8px;font-weight:500;">Alert rules</div>
@@ -352,7 +365,6 @@
             </div>
           </div>
         </div>
-
       </div>
     </div>
   </div>
@@ -384,38 +396,120 @@ let btDevice = null, btChar = null;
 const SERVICE_UUID = '0000ffe0-0000-1000-8000-00805f9b34fb';
 const CHAR_UUID    = '0000ffe1-0000-1000-8000-00805f9b34fb';
 
+// ── POSTURE SCORE HISTORY ──
+// Score 0–100: 100 = perfect alignment, decays linearly as divergence grows toward thresh*2.
+let scoreHistory = new Array(MAX_PTS).fill(null);
+let rawScoreLog  = [];   // unbounded session log used for trend comparison
+
+function calcScore(upper, lower) {
+  const thresh = parseInt(document.getElementById('threshSlider').value);
+  const diff   = Math.abs(upper - lower);
+  return Math.max(0, Math.round(100 - (diff / (thresh * 2)) * 100));
+}
+
+function movingAvg(arr, window) {
+  return arr.map((v, i) => {
+    if(v === null) return null;
+    const slice = arr.slice(Math.max(0, i - window + 1), i + 1).filter(x => x !== null);
+    return slice.length ? Math.round(slice.reduce((a, b) => a + b, 0) / slice.length) : null;
+  });
+}
+
+// ── CHART ──
 const chartCtx = document.getElementById('angleChart').getContext('2d');
 const chart = new Chart(chartCtx, {
   type: 'line',
   data: {
     labels: new Array(MAX_PTS).fill(''),
     datasets: [
-      { label:'Upper', data:[...upperHistory], borderColor:'#58a6ff', backgroundColor:'rgba(88,166,255,0.06)', borderWidth:2, pointRadius:0, tension:0.4, fill:true },
-      { label:'Lower', data:[...lowerHistory], borderColor:'#3fb950', backgroundColor:'rgba(63,185,80,0.06)',  borderWidth:2, pointRadius:0, tension:0.4, fill:true },
-      { label:'Thresh', data:new Array(MAX_PTS).fill(10), borderColor:'#f0883e', borderWidth:1.5, borderDash:[5,4], pointRadius:0, fill:false }
+      {
+        label: 'Score',
+        data: [...scoreHistory],
+        borderColor: '#3fb950',
+        backgroundColor: (ctx) => {
+          const g = ctx.chart.ctx.createLinearGradient(0, 0, 0, ctx.chart.height);
+          g.addColorStop(0,   'rgba(63,185,80,0.20)');
+          g.addColorStop(0.7, 'rgba(63,185,80,0.03)');
+          g.addColorStop(1,   'rgba(63,185,80,0)');
+          return g;
+        },
+        borderWidth: 2,
+        pointRadius: 0,
+        tension: 0.45,
+        fill: true,
+        spanGaps: true
+      },
+      {
+        label: 'Avg',
+        data: new Array(MAX_PTS).fill(null),
+        borderColor: '#58a6ff',
+        borderWidth: 1.5,
+        borderDash: [5, 4],
+        pointRadius: 0,
+        tension: 0.45,
+        fill: false,
+        spanGaps: true
+      }
     ]
   },
   options: {
-    responsive:true, maintainAspectRatio:false, animation:false,
-    plugins:{ legend:{display:false}, tooltip:{enabled:false} },
-    scales:{
-      x:{ display:false },
-      y:{
-        min:-35, max:70,
-        ticks:{ stepSize:20, color:'#8b949e', font:{size:11} },
-        grid:{ color:'rgba(136,135,128,0.12)' },
-        border:{display:false}
+    responsive: true, maintainAspectRatio: false, animation: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        enabled: true,
+        backgroundColor: '#1c2333',
+        borderColor: '#30363d',
+        borderWidth: 1,
+        titleColor: '#8b949e',
+        bodyColor: '#e6edf3',
+        padding: 10,
+        callbacks: {
+          title: () => '',
+          label: (ctx) => ctx.datasetIndex === 0 ? ` Score: ${ctx.raw}` : ` 10-pt avg: ${ctx.raw}`
+        }
+      }
+    },
+    scales: {
+      x: { display: false },
+      y: {
+        min: 0, max: 100,
+        ticks: {
+          stepSize: 25,
+          color: '#8b949e',
+          font: { size: 11 },
+          callback: v => v === 0 ? 'Poor' : v === 50 ? 'Fair' : v === 100 ? 'Good' : ''
+        },
+        grid: { color: 'rgba(136,135,128,0.12)' },
+        border: { display: false }
       }
     }
   }
 });
 
 function updateChart() {
-  chart.data.datasets[0].data = [...upperHistory];
-  chart.data.datasets[1].data = [...lowerHistory];
-  const t = parseInt(document.getElementById('threshSlider').value);
-  chart.data.datasets[2].data = new Array(MAX_PTS).fill(t);
+  chart.data.datasets[0].data = [...scoreHistory];
+  chart.data.datasets[1].data = movingAvg(scoreHistory, 10);
   chart.update('none');
+}
+
+function updateScoreDisplay(score) {
+  const el = document.getElementById('historyScore');
+  el.textContent = score;
+  el.className = 'history-score-val ' + (score >= 70 ? 'good' : score >= 40 ? 'warn' : 'bad');
+
+  const trendEl = document.getElementById('historyTrend');
+  if(rawScoreLog.length >= 20) {
+    const recent = rawScoreLog.slice(-10).reduce((a,b)=>a+b,0) / 10;
+    const prev   = rawScoreLog.slice(-20,-10).reduce((a,b)=>a+b,0) / 10;
+    const delta  = Math.round(recent - prev);
+    if(delta > 2)       { trendEl.textContent = '+' + delta + ' improving'; trendEl.className = 'trend-val trend-up'; }
+    else if(delta < -2) { trendEl.textContent = delta + ' declining';       trendEl.className = 'trend-val trend-down'; }
+    else                { trendEl.textContent = 'stable';                   trendEl.className = 'trend-val trend-flat'; }
+  } else {
+    trendEl.textContent = rawScoreLog.length < 10 ? 'collecting...' : 'need more data';
+    trendEl.className = 'trend-val trend-flat';
+  }
 }
 
 function updateSpine(upperDeg, lowerDeg) {
@@ -434,77 +528,50 @@ function updateSpine(upperDeg, lowerDeg) {
   const topY = midY - UPPER_LEN * Math.cos(uRad);
   const headCx = topX;
   const headCy = topY - HEAD_R;
-  const pelvisEl = document.getElementById('pelvis');
-  pelvisEl.setAttribute('cx', pelvisX);
-  pelvisEl.setAttribute('cy', pelvisY);
-  const headEl = document.getElementById('head');
-  headEl.setAttribute('cx', headCx);
-  headEl.setAttribute('cy', headCy);
+  document.getElementById('pelvis').setAttribute('cx', pelvisX);
+  document.getElementById('pelvis').setAttribute('cy', pelvisY);
+  document.getElementById('head').setAttribute('cx', headCx);
+  document.getElementById('head').setAttribute('cy', headCy);
   const headText = document.getElementById('headText');
-  if(headText){
-    headText.setAttribute('x', headCx);
-    headText.setAttribute('y', headCy + 4);
-  }
-  const l_cpx1 = pelvisX + lAng * 0.9;
-  const l_cpy1 = pelvisY - LOWER_LEN * 0.35;
-  const l_cpx2 = midX    - lAng * 0.3;
-  const l_cpy2 = pelvisY - LOWER_LEN * 0.7;
+  if(headText){ headText.setAttribute('x', headCx); headText.setAttribute('y', headCy + 4); }
+  const l_cpx1 = pelvisX + lAng * 0.9, l_cpy1 = pelvisY - LOWER_LEN * 0.35;
+  const l_cpx2 = midX    - lAng * 0.3, l_cpy2 = pelvisY - LOWER_LEN * 0.7;
   document.getElementById('lowerSpinePath').setAttribute('d',
-    `M ${pelvisX} ${pelvisY} C ${l_cpx1} ${l_cpy1}, ${l_cpx2} ${l_cpy2}, ${midX} ${midY}`
-  );
-  const u_cpx1 = midX + uAng * 0.9;
-  const u_cpy1 = midY - UPPER_LEN * 0.35;
-  const u_cpx2 = topX - uAng * 0.3;
-  const u_cpy2 = midY - UPPER_LEN * 0.7;
+    `M ${pelvisX} ${pelvisY} C ${l_cpx1} ${l_cpy1}, ${l_cpx2} ${l_cpy2}, ${midX} ${midY}`);
+  const u_cpx1 = midX + uAng * 0.9, u_cpy1 = midY - UPPER_LEN * 0.35;
+  const u_cpx2 = topX - uAng * 0.3, u_cpy2 = midY - UPPER_LEN * 0.7;
   document.getElementById('upperSpinePath').setAttribute('d',
-    `M ${midX} ${midY} C ${u_cpx1} ${u_cpy1}, ${u_cpx2} ${u_cpy2}, ${topX} ${topY}`
-  );
+    `M ${midX} ${midY} C ${u_cpx1} ${u_cpy1}, ${u_cpx2} ${u_cpy2}, ${topX} ${topY}`);
   const lowerTicks = document.getElementById('lowerTicks');
   lowerTicks.innerHTML = '';
   for(let i=1;i<=4;i++){
-    const t = i/5;
-    const bx = cubicBezier(t, pelvisX, l_cpx1, l_cpx2, midX);
-    const by = cubicBezier(t, pelvisY, l_cpy1, l_cpy2, midY);
-    const tx2 = cubicBezierDeriv(t, pelvisX, l_cpx1, l_cpx2, midX);
-    const ty2 = cubicBezierDeriv(t, pelvisY, l_cpy1, l_cpy2, midY);
-    const angle = Math.atan2(ty2, tx2) * 180 / Math.PI;
-    const r = document.createElementNS('http://www.w3.org/2000/svg','rect');
-    r.setAttribute('x', bx-6); r.setAttribute('y', by-2.5);
-    r.setAttribute('width',12); r.setAttribute('height',5);
-    r.setAttribute('rx',1.5); r.setAttribute('fill','#21262d');
-    r.setAttribute('stroke','#3fb950'); r.setAttribute('stroke-width','1');
-    r.setAttribute('transform',`rotate(${angle},${bx},${by})`);
-    lowerTicks.appendChild(r);
+    const t=i/5;
+    const bx=cubicBezier(t,pelvisX,l_cpx1,l_cpx2,midX), by=cubicBezier(t,pelvisY,l_cpy1,l_cpy2,midY);
+    const angle=Math.atan2(cubicBezierDeriv(t,pelvisY,l_cpy1,l_cpy2,midY),cubicBezierDeriv(t,pelvisX,l_cpx1,l_cpx2,midX))*180/Math.PI;
+    const r=document.createElementNS('http://www.w3.org/2000/svg','rect');
+    r.setAttribute('x',bx-6); r.setAttribute('y',by-2.5); r.setAttribute('width',12); r.setAttribute('height',5);
+    r.setAttribute('rx',1.5); r.setAttribute('fill','#21262d'); r.setAttribute('stroke','#3fb950'); r.setAttribute('stroke-width','1');
+    r.setAttribute('transform',`rotate(${angle},${bx},${by})`); lowerTicks.appendChild(r);
   }
   const upperTicks = document.getElementById('upperTicks');
   upperTicks.innerHTML = '';
   for(let i=1;i<=4;i++){
-    const t = i/5;
-    const bx = cubicBezier(t, midX, u_cpx1, u_cpx2, topX);
-    const by = cubicBezier(t, midY, u_cpy1, u_cpy2, topY);
-    const tx2 = cubicBezierDeriv(t, midX, u_cpx1, u_cpx2, topX);
-    const ty2 = cubicBezierDeriv(t, midY, u_cpy1, u_cpy2, topY);
-    const angle = Math.atan2(ty2, tx2) * 180 / Math.PI;
-    const r = document.createElementNS('http://www.w3.org/2000/svg','rect');
-    r.setAttribute('x', bx-5); r.setAttribute('y', by-2.5);
-    r.setAttribute('width',10); r.setAttribute('height',5);
-    r.setAttribute('rx',1.5); r.setAttribute('fill','#21262d');
-    r.setAttribute('stroke','#58a6ff'); r.setAttribute('stroke-width','1');
-    r.setAttribute('transform',`rotate(${angle},${bx},${by})`);
-    upperTicks.appendChild(r);
+    const t=i/5;
+    const bx=cubicBezier(t,midX,u_cpx1,u_cpx2,topX), by=cubicBezier(t,midY,u_cpy1,u_cpy2,topY);
+    const angle=Math.atan2(cubicBezierDeriv(t,midY,u_cpy1,u_cpy2,topY),cubicBezierDeriv(t,midX,u_cpx1,u_cpx2,topX))*180/Math.PI;
+    const r=document.createElementNS('http://www.w3.org/2000/svg','rect');
+    r.setAttribute('x',bx-5); r.setAttribute('y',by-2.5); r.setAttribute('width',10); r.setAttribute('height',5);
+    r.setAttribute('rx',1.5); r.setAttribute('fill','#21262d'); r.setAttribute('stroke','#58a6ff'); r.setAttribute('stroke-width','1');
+    r.setAttribute('transform',`rotate(${angle},${bx},${by})`); upperTicks.appendChild(r);
   }
   let jDot = document.getElementById('junctionDot');
   if(!jDot){
     jDot = document.createElementNS('http://www.w3.org/2000/svg','circle');
-    jDot.setAttribute('id','junctionDot');
-    jDot.setAttribute('r','4');
-    jDot.setAttribute('fill','#1c2333');
-    jDot.setAttribute('stroke','#8b949e');
-    jDot.setAttribute('stroke-width','1.5');
+    jDot.setAttribute('id','junctionDot'); jDot.setAttribute('r','4');
+    jDot.setAttribute('fill','#1c2333'); jDot.setAttribute('stroke','#8b949e'); jDot.setAttribute('stroke-width','1.5');
     document.getElementById('spineSvg').appendChild(jDot);
   }
-  jDot.setAttribute('cx', midX);
-  jDot.setAttribute('cy', midY);
+  jDot.setAttribute('cx', midX); jDot.setAttribute('cy', midY);
 }
 
 function cubicBezier(t, p0, p1, p2, p3) {
@@ -578,7 +645,14 @@ function ingest(upper, lower) {
   lower = parseFloat(lower.toFixed(1));
   upperHistory.push(upper); if(upperHistory.length>MAX_PTS) upperHistory.shift();
   lowerHistory.push(lower); if(lowerHistory.length>MAX_PTS) lowerHistory.shift();
+
+  // Score and chart
+  const score = calcScore(upper, lower);
+  scoreHistory.push(score); if(scoreHistory.length>MAX_PTS) scoreHistory.shift();
+  rawScoreLog.push(score);
   updateChart();
+  updateScoreDisplay(score);
+
   updateSpine(upper, lower);
   analyzePosture(upper, lower);
   document.getElementById('upperSlider').value  = upper;
@@ -602,7 +676,6 @@ function updateThresh() {
   updateChart();
 }
 
-// ── DEMO MODE (fixed: actually runs an interval) ──
 let demoTimer = null;
 let demoPhase = 0;
 function toggleDemo() {
@@ -619,12 +692,11 @@ function toggleDemo() {
   document.getElementById('deviceAddr').textContent = 'BLE · Simulated · Dual gyroscopes active';
   document.getElementById('statusBadge').className = 'badge badge-connected';
   document.getElementById('statusBadge').textContent = '● CONNECTED';
-  document.getElementById('demoBtn').textContent = '⏹ Stop Demo';
+  document.getElementById('demoBtn').textContent = 'Stop Demo';
   if(document.getElementById('chkConnection').checked)
-    sendNotification('ok','🔵 ESP32 Connected','Demo device online — dual gyros active');
+    sendNotification('ok','ESP32 Connected','Demo device online — dual gyros active');
   ingest(5, 5);
   demoTimer = setInterval(() => {
-    // Cycles through good posture → warning → bad → recovery
     demoPhase += 0.05;
     const upper = 8 + 18 * Math.sin(demoPhase) + (Math.random() - 0.5) * 2;
     const lower = 5 + 5  * Math.sin(demoPhase * 0.7 + 1) + (Math.random() - 0.5) * 2;
@@ -635,7 +707,7 @@ function toggleDemo() {
 async function connectBluetooth() {
   if(!navigator.bluetooth){ showToast('alert','Web Bluetooth not supported','Use Chrome or Edge on desktop'); return; }
   const btn = document.getElementById('connectBtn');
-  btn.disabled = true; btn.textContent = '🔵 Scanning…';
+  btn.disabled = true; btn.textContent = 'Scanning...';
   try {
     btDevice = await navigator.bluetooth.requestDevice({ acceptAllDevices:true, optionalServices:[SERVICE_UUID] });
     btDevice.addEventListener('gattserverdisconnected', onDisconnected);
@@ -649,7 +721,7 @@ async function connectBluetooth() {
     } catch(e) {}
     onConnected(btDevice.name || btDevice.id);
   } catch(e) {
-    btn.disabled = false; btn.textContent = '🔍 Scan & Connect';
+    btn.disabled = false; btn.textContent = 'Connect';
     if(e.name !== 'NotFoundError') showToast('alert','Connection failed', e.message);
   }
 }
@@ -663,22 +735,22 @@ function onConnected(name) {
   document.getElementById('disconnectBtn').style.display = '';
   document.getElementById('liveDot').style.opacity = '1';
   if(document.getElementById('chkConnection').checked)
-    sendNotification('ok','🔵 ESP32 Connected', name + ' is online');
+    sendNotification('ok','ESP32 Connected', name + ' is online');
 }
 
 function onDisconnected() {
   btChar = null;
   document.getElementById('deviceName').textContent = 'Device disconnected';
-  document.getElementById('deviceAddr').textContent = 'Connection lost — click Scan to reconnect';
+  document.getElementById('deviceAddr').textContent = 'Connection lost — click Connect to reconnect';
   document.getElementById('statusBadge').className = 'badge badge-disconnected';
   document.getElementById('statusBadge').textContent = '● DISCONNECTED';
   document.getElementById('connectBtn').style.display = '';
   document.getElementById('connectBtn').disabled = false;
-  document.getElementById('connectBtn').textContent = '🔍 Scan & Connect';
+  document.getElementById('connectBtn').textContent = 'Connect';
   document.getElementById('disconnectBtn').style.display = 'none';
   document.getElementById('liveDot').style.opacity = '.3';
   if(document.getElementById('chkConnection').checked)
-    sendNotification('alert','🔴 ESP32 Disconnected','Connection was lost');
+    sendNotification('alert','ESP32 Disconnected','Connection was lost');
 }
 
 function disconnectBluetooth() {
@@ -735,9 +807,16 @@ function clearAll() {
   packets=0; alertCount=0; goodCount=0; wasPostureBad=false; lastAlertTime=0;
   upperHistory = new Array(MAX_PTS).fill(0);
   lowerHistory = new Array(MAX_PTS).fill(0);
+  scoreHistory = new Array(MAX_PTS).fill(null);
+  rawScoreLog  = [];
   document.getElementById('packetCount').textContent = '0 packets';
+  document.getElementById('historyScore').textContent = '—';
+  document.getElementById('historyScore').className = 'history-score-val good';
+  document.getElementById('historyTrend').textContent = '—';
+  document.getElementById('historyTrend').className = 'trend-val trend-flat';
   updateChart();
 }
+
 updateSpine(0, 0);
 </script>
 </body>

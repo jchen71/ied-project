@@ -149,14 +149,6 @@
   }
   input[type=range]:disabled { opacity:.35; cursor:not-allowed; }
 
-  .thresh-row   { display:flex; align-items:center; gap:10px; }
-  .thresh-input {
-    font-family:'JetBrains Mono',monospace; font-size:.82rem;
-    background:var(--surface2); border:1px solid var(--border); border-radius:6px;
-    padding:5px 10px; color:var(--text); width:64px; text-align:center;
-  }
-  .thresh-input:focus { outline:none; border-color:var(--blue); }
-
   /* ── NOTIFICATION LOG ── */
   .notif-list { display:flex; flex-direction:column; gap:6px; max-height:220px; overflow-y:auto; }
   .notif-list::-webkit-scrollbar { width:4px; }
@@ -202,12 +194,6 @@
   .toast-close { background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1rem; }
 
   .live-dot { width:8px; height:8px; border-radius:50%; background:var(--green); box-shadow:0 0 6px var(--green); animation:pulse 1.5s infinite; display:inline-block; }
-
-  /* Stats row */
-  .stats-row { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:16px; }
-  .stat { background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:12px; text-align:center; }
-  .stat-val { font-family:'JetBrains Mono',monospace; font-size:1.4rem; font-weight:500; margin-bottom:3px; }
-  .stat-lbl { font-size:.67rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:.8px; }
 </style>
 </head>
 <body>
@@ -365,6 +351,7 @@
               </label>
             </div>
           </div>
+        </div>
 
       </div>
     </div>
@@ -436,8 +423,8 @@ function updateSpine(upperDeg, lowerDeg) {
   const lAng = Math.max(-40, Math.min(55, lowerDeg));
   const toRad = d => d * Math.PI / 180;
   const pelvisX = 55, pelvisY = 220;
-  const LOWER_LEN = 80;  
-  const UPPER_LEN = 90;  
+  const LOWER_LEN = 80;
+  const UPPER_LEN = 90;
   const HEAD_R    = 14;
   const lRad = toRad(lAng);
   const midX = pelvisX + LOWER_LEN * Math.sin(lRad);
@@ -556,7 +543,6 @@ function analyzePosture(upper, lower) {
     if(now - lastAlertTime > 7000 && document.getElementById('chkBadPosture').checked) {
       lastAlertTime = now;
       alertCount++;
-      document.getElementById('statAlerts').textContent = alertCount;
       sendNotification('alert', '⚠️ Bad posture detected', `Spinal divergence ${diff.toFixed(1)}° exceeds ${thresh}° threshold`);
     }
   } else if(diff > thresh * 0.6) {
@@ -565,25 +551,26 @@ function analyzePosture(upper, lower) {
     stSub.textContent  = `Divergence ${diff.toFixed(1)}° — approaching threshold`;
     bar.style.background = '#f0883e';
     uVal.className = 'angle-val warn'; lVal.className = 'angle-val warn'; dVal.className = 'angle-val warn';
+    const now = Date.now();
+    if(now - lastAlertTime > 7000 && document.getElementById('chkBadPosture').checked) {
+      lastAlertTime = now;
+      sendNotification('warn', '⚡ Posture warning', `Divergence ${diff.toFixed(1)}° is approaching the ${thresh}° threshold`);
+    }
   } else {
     status.className = 'posture-status';
     stText.textContent = 'Good — spine aligned';
     bar.style.background = '#3fb950';
     uVal.className = 'angle-val'; lVal.className = 'angle-val'; dVal.className = 'angle-val';
   }
-  if(isBad && !wasPostureBad) { wasPostureBad = true; goodCount = Math.max(0, goodCount-1); }
+  if(isBad && !wasPostureBad) { wasPostureBad = true; }
   if(!isBad && wasPostureBad) {
     wasPostureBad = false;
-    goodCount++;
     if(document.getElementById('chkGoodReturn').checked) {
       sendNotification('ok', '✅ Posture corrected', 'Your spine is back in alignment');
     }
   }
   packets++;
-  if(!isBad) goodCount++;
-  document.getElementById('statPackets').textContent  = packets;
-  document.getElementById('packetCount').textContent  = packets + ' packets';
-  document.getElementById('statGoodPct').textContent  = Math.round((goodCount / packets) * 100) + '%';
+  document.getElementById('packetCount').textContent = packets + ' packets';
 }
 
 function ingest(upper, lower) {
@@ -615,10 +602,13 @@ function updateThresh() {
   updateChart();
 }
 
+// ── DEMO MODE (fixed: actually runs an interval) ──
 let demoTimer = null;
+let demoPhase = 0;
 function toggleDemo() {
   if(demoTimer) {
     clearInterval(demoTimer); demoTimer = null;
+    demoPhase = 0;
     document.getElementById('demoBtn').textContent = '⚡ Demo Mode';
     document.getElementById('statusBadge').className = 'badge badge-disconnected';
     document.getElementById('statusBadge').textContent = '● DISCONNECTED';
@@ -633,6 +623,13 @@ function toggleDemo() {
   if(document.getElementById('chkConnection').checked)
     sendNotification('ok','🔵 ESP32 Connected','Demo device online — dual gyros active');
   ingest(5, 5);
+  demoTimer = setInterval(() => {
+    // Cycles through good posture → warning → bad → recovery
+    demoPhase += 0.05;
+    const upper = 8 + 18 * Math.sin(demoPhase) + (Math.random() - 0.5) * 2;
+    const lower = 5 + 5  * Math.sin(demoPhase * 0.7 + 1) + (Math.random() - 0.5) * 2;
+    ingest(upper, lower);
+  }, 800);
 }
 
 async function connectBluetooth() {
@@ -708,7 +705,8 @@ function sendNotification(type, title, detail) {
   el.innerHTML = `<div class="notif-dot"></div><div class="notif-body"><div class="notif-title">${title}</div><div class="notif-detail">${detail} · ${time}</div></div>`;
   log.insertBefore(el, log.firstChild);
   while(log.children.length > 40) log.removeChild(log.lastChild);
-  document.getElementById('notifCount').textContent = (parseInt(document.getElementById('notifCount').textContent)||0) + 1 + ' sent';
+  const countEl = document.getElementById('notifCount');
+  countEl.textContent = ((parseInt(countEl.textContent) || 0) + 1) + ' sent';
   showToast(type, title, detail);
   if(Notification.permission === 'granted') {
     try { new Notification('Posture Monitor · ' + title, { body: detail }); } catch(e){}
@@ -734,12 +732,10 @@ if(Notification.permission !== 'granted') document.getElementById('permBanner').
 function clearAll() {
   document.getElementById('notifList').innerHTML = '<div class="empty-state" id="emptyNotif">No notifications yet — monitoring posture…</div>';
   document.getElementById('notifCount').textContent = '0 sent';
-  packets=0; alertCount=0; goodCount=0; wasPostureBad=false;
+  packets=0; alertCount=0; goodCount=0; wasPostureBad=false; lastAlertTime=0;
   upperHistory = new Array(MAX_PTS).fill(0);
   lowerHistory = new Array(MAX_PTS).fill(0);
-  document.getElementById('statPackets').textContent='0';
-  document.getElementById('statAlerts').textContent='0';
-  document.getElementById('statGoodPct').textContent='—';
+  document.getElementById('packetCount').textContent = '0 packets';
   updateChart();
 }
 updateSpine(0, 0);

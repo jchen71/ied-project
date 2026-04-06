@@ -222,11 +222,11 @@
       <div class="connect-inner">
         <div class="device-display">
           <div class="device-name" id="deviceName">No device paired</div>
-          <div class="device-addr" id="deviceAddr">Click "Scan & Connect" to find your ESP32</div>
+          <div class="device-addr" id="deviceAddr">Click "Connect" to pair</div>
         </div>
-        <button class="btn btn-primary" id="connectBtn" onclick="connectBluetooth()">🔍 Scan & Connect</button>
+        <button class="btn btn-primary" id="connectBtn" onclick="connectBluetooth()">Connect</button>
         <button class="btn btn-danger" id="disconnectBtn" style="display:none" onclick="disconnectBluetooth()">Disconnect</button>
-        <button class="btn btn-ghost" onclick="toggleDemo()" id="demoBtn">⚡ Demo Mode</button>
+        <button class="btn btn-ghost" onclick="toggleDemo()" id="demoBtn">Demo Mode</button>
       </div>
       <div style="margin-top:10px;font-size:.72rem;color:var(--text-muted);">
         Requires Web Bluetooth (Chrome/Edge). ESP32 must send JSON like <code style="color:var(--blue)">{"upper":12.4,"lower":8.1}</code> over BLE notify characteristic.

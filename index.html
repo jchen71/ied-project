@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ESP32 Posture Monitor</title>
+<title>Posture Monitor</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 
@@ -149,7 +149,6 @@
   }
   input[type=range]:disabled { opacity:.35; cursor:not-allowed; }
 
-  .scenario-row { display:flex; gap:8px; flex-wrap:wrap; }
   .thresh-row   { display:flex; align-items:center; gap:10px; }
   .thresh-input {
     font-family:'JetBrains Mono',monospace; font-size:.82rem;
@@ -225,7 +224,6 @@
 
 <div class="main">
 
-  <!-- ══ CONNECTION ══ -->
   <div class="card">
     <div class="card-header"><span class="card-title">🔵 Bluetooth Connection</span></div>
     <div class="card-body">
@@ -250,7 +248,6 @@
     </div>
   </div>
 
-  <!-- ══ POSTURE DASHBOARD ══ -->
   <div class="card">
     <div class="card-header">
       <span class="card-title"><span class="live-dot" id="liveDot" style="opacity:.3"></span>&nbsp; Live Posture Analysis</span>
@@ -260,46 +257,28 @@
 
       <div class="posture-grid">
 
-        <!-- Spine visualizer -->
         <div>
           <div style="font-size:.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;">Spine view — side profile</div>
           <div class="spine-panel">
 
-            <!-- SVG spine -->
             <div class="spine-svg-wrap">
               <svg id="spineSvg" width="140" height="270" viewBox="-25 0 160 270">
-                <!-- bg reference line (vertical) -->
                 <line x1="55" y1="10" x2="55" y2="250" stroke="#30363d" stroke-width="1" stroke-dasharray="4,4"/>
                 <text x="58" y="18" font-size="9" fill="#484f58" font-family="JetBrains Mono,monospace">vertical</text>
-
-                <!-- HEAD -->
                 <circle id="head" cx="55" cy="32" r="14" fill="#21262d" stroke="#58a6ff" stroke-width="1.5"/>
                 <text id="headText" x="55" y="36" text-anchor="middle" font-size="9" fill="#8b949e" font-family="sans-serif">head</text>
-
-                <!-- UPPER SPINE segment (neck to mid-back) -->
-                <!-- vertebrae drawn as bezier path from control points -->
                 <path id="upperSpinePath" d="" fill="none" stroke="#58a6ff" stroke-width="4" stroke-linecap="round"/>
-                <!-- vertebra tick marks on upper -->
                 <g id="upperTicks"></g>
-
-                <!-- LOWER SPINE segment (mid-back to pelvis) -->
                 <path id="lowerSpinePath" d="" fill="none" stroke="#3fb950" stroke-width="4" stroke-linecap="round"/>
                 <g id="lowerTicks"></g>
-
-                <!-- PELVIS -->
                 <ellipse id="pelvis" cx="55" cy="220" rx="20" ry="8" fill="#21262d" stroke="#484f58" stroke-width="1.5"/>
-
-                <!-- Angle arc indicators -->
                 <path id="upperArc" d="" fill="rgba(88,166,255,0.1)" stroke="#58a6ff" stroke-width="1" stroke-dasharray="3,2" opacity="0"/>
                 <path id="lowerArc" d="" fill="rgba(63,185,80,0.1)" stroke="#3fb950" stroke-width="1" stroke-dasharray="3,2" opacity="0"/>
-
-                <!-- Labels -->
                 <text id="upperLabel" x="4" y="100" font-size="8" fill="#58a6ff" font-family="JetBrains Mono,monospace">upper</text>
                 <text id="lowerLabel" x="4" y="175" font-size="8" fill="#3fb950" font-family="JetBrains Mono,monospace">lower</text>
               </svg>
             </div>
 
-            <!-- Info panel -->
             <div class="spine-info">
               <div class="angle-row">
                 <div class="angle-label">Upper back (T1–T6)</div>
@@ -331,7 +310,6 @@
           </div>
         </div>
 
-        <!-- Live chart -->
         <div>
           <div style="font-size:.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;">Angle history — last 60 readings</div>
           <div class="chart-wrap">
@@ -349,9 +327,8 @@
     </div>
   </div>
 
-  <!-- ══ SIMULATION CONTROLS ══ -->
   <div class="card">
-    <div class="card-header"><span class="card-title">⚡ Simulation &amp; Alert Settings</span></div>
+    <div class="card-header"><span class="card-title">Simulation &amp; Alert Settings</span></div>
     <div class="card-body">
       <div class="sim-grid">
 
@@ -375,18 +352,6 @@
 
         <div style="display:flex;flex-direction:column;gap:14px;">
           <div>
-            <div style="font-size:.78rem;color:var(--text-dim);margin-bottom:8px;font-weight:500;">Preset scenarios</div>
-            <div class="scenario-row">
-              <button class="btn btn-ghost btn-sm" onclick="runScenario('perfect')">✅ Perfect posture</button>
-              <button class="btn btn-ghost btn-sm" onclick="runScenario('lean')">↗ Lean forward (OK)</button>
-              <button class="btn btn-ghost btn-sm" onclick="runScenario('slouch')">❌ Slouching</button>
-              <button class="btn btn-ghost btn-sm" onclick="runScenario('hunch')">❌ Upper hunch</button>
-              <button class="btn btn-ghost btn-sm" onclick="runScenario('sway')">❌ Lower sway</button>
-              <button class="btn btn-ghost btn-sm" onclick="stopScenario()">⏹ Stop</button>
-            </div>
-          </div>
-
-          <div>
             <div style="font-size:.78rem;color:var(--text-dim);margin-bottom:8px;font-weight:500;">Alert rules</div>
             <div style="display:flex;flex-direction:column;gap:8px;font-size:.8rem;">
               <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
@@ -401,33 +366,13 @@
             </div>
           </div>
 
-          <div>
-            <div style="font-size:.78rem;color:var(--text-dim);margin-bottom:8px;font-weight:500;">Stats</div>
-            <div class="stats-row">
-              <div class="stat">
-                <div class="stat-val" id="statPackets" style="color:var(--blue)">0</div>
-                <div class="stat-lbl">Packets</div>
-              </div>
-              <div class="stat">
-                <div class="stat-val" id="statAlerts" style="color:var(--red)">0</div>
-                <div class="stat-lbl">Alerts</div>
-              </div>
-              <div class="stat">
-                <div class="stat-val" id="statGoodPct" style="color:var(--green)">—</div>
-                <div class="stat-lbl">Good %</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
       </div>
     </div>
   </div>
 
-  <!-- ══ NOTIFICATION LOG ══ -->
   <div class="card">
     <div class="card-header">
-      <span class="card-title">🔔 Notification Log</span>
+      <span class="card-title">Notification Log</span>
       <span style="font-size:.72rem;color:var(--text-muted);" id="notifCount">0 sent</span>
     </div>
     <div class="card-body" style="padding:12px 18px;">
@@ -437,28 +382,21 @@
     </div>
   </div>
 
-</div><!-- /main -->
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
-// ══════════════════════════════════════════
-//  CONSTANTS & STATE
-// ══════════════════════════════════════════
 const MAX_PTS = 60;
 let upperHistory = new Array(MAX_PTS).fill(0);
 let lowerHistory = new Array(MAX_PTS).fill(0);
 let packets = 0, alertCount = 0, goodCount = 0;
 let lastAlertTime = 0, wasPostureBad = false;
-let scenarioTimer = null, scenarioStep = 0;
 let demoRunning = false;
 let btDevice = null, btChar = null;
 
 const SERVICE_UUID = '0000ffe0-0000-1000-8000-00805f9b34fb';
 const CHAR_UUID    = '0000ffe1-0000-1000-8000-00805f9b34fb';
 
-// ══════════════════════════════════════════
-//  CHART
-// ══════════════════════════════════════════
 const chartCtx = document.getElementById('angleChart').getContext('2d');
 const chart = new Chart(chartCtx, {
   type: 'line',
@@ -493,59 +431,33 @@ function updateChart() {
   chart.update('none');
 }
 
-// ══════════════════════════════════════════
-//  SPINE SVG — forward kinematics
-// ══════════════════════════════════════════
-// Pelvis is the fixed anchor. Lower segment grows upward from pelvis
-// at lowerDeg from vertical. Upper segment grows upward from the top
-// of lower at upperDeg from vertical. Head attaches to top of upper.
-// This means EVERY joint and endpoint moves freely — nothing is pinned.
-
 function updateSpine(upperDeg, lowerDeg) {
   const uAng = Math.max(-40, Math.min(55, upperDeg));
   const lAng = Math.max(-40, Math.min(55, lowerDeg));
-
   const toRad = d => d * Math.PI / 180;
-
-  // Fixed anchor: pelvis centre
   const pelvisX = 55, pelvisY = 220;
-  const LOWER_LEN = 80;  // px length of lower segment
-  const UPPER_LEN = 90;  // px length of upper segment
+  const LOWER_LEN = 80;  
+  const UPPER_LEN = 90;  
   const HEAD_R    = 14;
-
-  // Lower segment: grows UPWARD from pelvis, tilted by lAng
-  // "upward" in SVG = negative Y, so dy = -cos(angle), dx = sin(angle)
   const lRad = toRad(lAng);
   const midX = pelvisX + LOWER_LEN * Math.sin(lRad);
   const midY = pelvisY - LOWER_LEN * Math.cos(lRad);
-
-  // Upper segment: grows UPWARD from midpoint, tilted by uAng
   const uRad = toRad(uAng);
   const topX = midX + UPPER_LEN * Math.sin(uRad);
   const topY = midY - UPPER_LEN * Math.cos(uRad);
-
-  // Head: sits on top of upper segment
   const headCx = topX;
   const headCy = topY - HEAD_R;
-
-  // Draw pelvis ellipse
   const pelvisEl = document.getElementById('pelvis');
   pelvisEl.setAttribute('cx', pelvisX);
   pelvisEl.setAttribute('cy', pelvisY);
-
-  // Draw head
   const headEl = document.getElementById('head');
   headEl.setAttribute('cx', headCx);
   headEl.setAttribute('cy', headCy);
-  // Move head label
   const headText = document.getElementById('headText');
   if(headText){
     headText.setAttribute('x', headCx);
     headText.setAttribute('y', headCy + 4);
   }
-
-  // Lower spine bezier — control points curve in direction of tilt
-  // giving a gentle arc feel. Both endpoints are now computed.
   const l_cpx1 = pelvisX + lAng * 0.9;
   const l_cpy1 = pelvisY - LOWER_LEN * 0.35;
   const l_cpx2 = midX    - lAng * 0.3;
@@ -553,8 +465,6 @@ function updateSpine(upperDeg, lowerDeg) {
   document.getElementById('lowerSpinePath').setAttribute('d',
     `M ${pelvisX} ${pelvisY} C ${l_cpx1} ${l_cpy1}, ${l_cpx2} ${l_cpy2}, ${midX} ${midY}`
   );
-
-  // Upper spine bezier
   const u_cpx1 = midX + uAng * 0.9;
   const u_cpy1 = midY - UPPER_LEN * 0.35;
   const u_cpx2 = topX - uAng * 0.3;
@@ -562,15 +472,12 @@ function updateSpine(upperDeg, lowerDeg) {
   document.getElementById('upperSpinePath').setAttribute('d',
     `M ${midX} ${midY} C ${u_cpx1} ${u_cpy1}, ${u_cpx2} ${u_cpy2}, ${topX} ${topY}`
   );
-
-  // Vertebra ticks — lower (4 ticks along bezier)
   const lowerTicks = document.getElementById('lowerTicks');
   lowerTicks.innerHTML = '';
   for(let i=1;i<=4;i++){
     const t = i/5;
     const bx = cubicBezier(t, pelvisX, l_cpx1, l_cpx2, midX);
     const by = cubicBezier(t, pelvisY, l_cpy1, l_cpy2, midY);
-    // Tangent direction for rotation
     const tx2 = cubicBezierDeriv(t, pelvisX, l_cpx1, l_cpx2, midX);
     const ty2 = cubicBezierDeriv(t, pelvisY, l_cpy1, l_cpy2, midY);
     const angle = Math.atan2(ty2, tx2) * 180 / Math.PI;
@@ -582,8 +489,6 @@ function updateSpine(upperDeg, lowerDeg) {
     r.setAttribute('transform',`rotate(${angle},${bx},${by})`);
     lowerTicks.appendChild(r);
   }
-
-  // Vertebra ticks — upper (4 ticks)
   const upperTicks = document.getElementById('upperTicks');
   upperTicks.innerHTML = '';
   for(let i=1;i<=4;i++){
@@ -601,8 +506,6 @@ function updateSpine(upperDeg, lowerDeg) {
     r.setAttribute('transform',`rotate(${angle},${bx},${by})`);
     upperTicks.appendChild(r);
   }
-
-  // Junction dot at midpoint
   let jDot = document.getElementById('junctionDot');
   if(!jDot){
     jDot = document.createElementNS('http://www.w3.org/2000/svg','circle');
@@ -625,46 +528,30 @@ function cubicBezierDeriv(t, p0, p1, p2, p3) {
   return 3*Math.pow(1-t,2)*(p1-p0) + 6*(1-t)*t*(p2-p1) + 3*t*t*(p3-p2);
 }
 
-// ══════════════════════════════════════════
-//  POSTURE LOGIC  (dual-gyro)
-// ══════════════════════════════════════════
-// Key insight: we alert on DIVERGENCE (|upper - lower|), not raw angle.
-// If both gyros tilt similarly → clean lean → no alert.
-// If they diverge → actual spine curvature → alert.
-
 function analyzePosture(upper, lower) {
   const thresh = parseInt(document.getElementById('threshSlider').value);
   const diff = Math.abs(upper - lower);
   const pct  = Math.min(100, Math.round((diff / (thresh * 2)) * 100));
-
   document.getElementById('upperVal').textContent = upper.toFixed(1) + '°';
   document.getElementById('lowerVal').textContent = lower.toFixed(1) + '°';
   document.getElementById('diffVal').textContent  = diff.toFixed(1) + '°';
   document.getElementById('diffPct').textContent  = pct + '%';
-
   const bar  = document.getElementById('diffBar');
   bar.style.width = pct + '%';
-
   const status = document.getElementById('postureStatus');
   const stText = document.getElementById('statusText');
   const stSub  = document.getElementById('statusSub');
   const uVal   = document.getElementById('upperVal');
   const lVal   = document.getElementById('lowerVal');
   const dVal   = document.getElementById('diffVal');
-
   let isBad = false;
   if(diff > thresh) {
     isBad = true;
     status.className = 'posture-status bad';
     stText.textContent = 'Bad posture — spine curving';
-    if(upper > lower) {
-      stSub.textContent = `Upper back is ${diff.toFixed(1)}° more forward than lower — slouching`;
-    } else {
-      stSub.textContent = `Lower back is ${diff.toFixed(1)}° more forward than upper — swayback`;
-    }
+    stSub.textContent = upper > lower ? `Upper back is ${diff.toFixed(1)}° more forward than lower` : `Lower back is ${diff.toFixed(1)}° more forward than upper`;
     bar.style.background = '#f85149';
     uVal.className = 'angle-val bad'; lVal.className = 'angle-val bad'; dVal.className = 'angle-val bad';
-
     const now = Date.now();
     if(now - lastAlertTime > 7000 && document.getElementById('chkBadPosture').checked) {
       lastAlertTime = now;
@@ -681,15 +568,9 @@ function analyzePosture(upper, lower) {
   } else {
     status.className = 'posture-status';
     stText.textContent = 'Good — spine aligned';
-    const totalLean = ((Math.abs(upper) + Math.abs(lower)) / 2).toFixed(1);
-    stSub.textContent = totalLean > 5
-      ? `Leaning ${totalLean}° forward — spine straight ✓`
-      : 'Upright and aligned';
     bar.style.background = '#3fb950';
     uVal.className = 'angle-val'; lVal.className = 'angle-val'; dVal.className = 'angle-val';
   }
-
-  // Good → bad transition notification
   if(isBad && !wasPostureBad) { wasPostureBad = true; goodCount = Math.max(0, goodCount-1); }
   if(!isBad && wasPostureBad) {
     wasPostureBad = false;
@@ -698,7 +579,6 @@ function analyzePosture(upper, lower) {
       sendNotification('ok', '✅ Posture corrected', 'Your spine is back in alignment');
     }
   }
-
   packets++;
   if(!isBad) goodCount++;
   document.getElementById('statPackets').textContent  = packets;
@@ -706,31 +586,22 @@ function analyzePosture(upper, lower) {
   document.getElementById('statGoodPct').textContent  = Math.round((goodCount / packets) * 100) + '%';
 }
 
-// ══════════════════════════════════════════
-//  INGEST DATA
-// ══════════════════════════════════════════
 function ingest(upper, lower) {
   upper = parseFloat(upper.toFixed(1));
   lower = parseFloat(lower.toFixed(1));
-
   upperHistory.push(upper); if(upperHistory.length>MAX_PTS) upperHistory.shift();
   lowerHistory.push(lower); if(lowerHistory.length>MAX_PTS) lowerHistory.shift();
-
   updateChart();
   updateSpine(upper, lower);
   analyzePosture(upper, lower);
-
-  // Sync manual sliders
   document.getElementById('upperSlider').value  = upper;
   document.getElementById('lowerSlider').value  = lower;
   document.getElementById('upperSliderVal').textContent = upper.toFixed(1) + '°';
   document.getElementById('lowerSliderVal').textContent = lower.toFixed(1) + '°';
-
   document.getElementById('liveDot').style.opacity = '1';
 }
 
 function manualInput() {
-  stopScenario();
   const u = parseFloat(document.getElementById('upperSlider').value);
   const l = parseFloat(document.getElementById('lowerSlider').value);
   document.getElementById('upperSliderVal').textContent = u.toFixed(1) + '°';
@@ -744,32 +615,6 @@ function updateThresh() {
   updateChart();
 }
 
-// ══════════════════════════════════════════
-//  SCENARIOS
-// ══════════════════════════════════════════
-const SCENARIOS = {
-  perfect: (t) => ({ u: 1+Math.sin(t*0.1)*2, l: 1+Math.sin(t*0.1+0.1)*2 }),
-  lean:    (t) => ({ u: 20+Math.sin(t*0.15)*5, l: 20+Math.sin(t*0.15+0.2)*5 }),   // both lean together
-  slouch:  (t) => ({ u: 18+Math.sin(t*0.2)*6, l: 3+Math.sin(t*0.15)*3 }),          // upper >> lower
-  hunch:   (t) => ({ u: 25+Math.sin(t*0.18)*4, l: 5+Math.sin(t*0.12)*4 }),
-  sway:    (t) => ({ u: 2+Math.sin(t*0.2)*3,  l: 20+Math.sin(t*0.18)*5 }),         // lower >> upper
-};
-
-function runScenario(name) {
-  stopScenario();
-  scenarioStep = 0;
-  const fn = SCENARIOS[name];
-  scenarioTimer = setInterval(() => {
-    const {u,l} = fn(scenarioStep);
-    ingest(u + (Math.random()-.5)*1.5, l + (Math.random()-.5)*1.5);
-    scenarioStep++;
-  }, 700);
-}
-
-function stopScenario() {
-  if(scenarioTimer) { clearInterval(scenarioTimer); scenarioTimer = null; }
-}
-
 let demoTimer = null;
 function toggleDemo() {
   if(demoTimer) {
@@ -778,7 +623,6 @@ function toggleDemo() {
     document.getElementById('statusBadge').className = 'badge badge-disconnected';
     document.getElementById('statusBadge').textContent = '● DISCONNECTED';
     document.getElementById('liveDot').style.opacity = '.3';
-    stopScenario();
     return;
   }
   document.getElementById('deviceName').textContent = 'ESP32 Demo (Simulated)';
@@ -788,12 +632,9 @@ function toggleDemo() {
   document.getElementById('demoBtn').textContent = '⏹ Stop Demo';
   if(document.getElementById('chkConnection').checked)
     sendNotification('ok','🔵 ESP32 Connected','Demo device online — dual gyros active');
-  runScenario('lean'); // start with a good posture scene
+  ingest(5, 5);
 }
 
-// ══════════════════════════════════════════
-//  BLUETOOTH
-// ══════════════════════════════════════════
 async function connectBluetooth() {
   if(!navigator.bluetooth){ showToast('alert','Web Bluetooth not supported','Use Chrome or Edge on desktop'); return; }
   const btn = document.getElementById('connectBtn');
@@ -808,7 +649,7 @@ async function connectBluetooth() {
       char.addEventListener('characteristicvaluechanged', onBtData);
       await char.startNotifications();
       btChar = char;
-    } catch(e) { /* user may use different UUID */ }
+    } catch(e) {}
     onConnected(btDevice.name || btDevice.id);
   } catch(e) {
     btn.disabled = false; btn.textContent = '🔍 Scan & Connect';
@@ -850,19 +691,14 @@ function disconnectBluetooth() {
 function onBtData(event) {
   const text = new TextDecoder().decode(event.target.value).trim();
   try {
-    // Expect JSON: {"upper":12.4,"lower":8.1}
     const obj = JSON.parse(text);
     if(obj.upper !== undefined && obj.lower !== undefined) ingest(obj.upper, obj.lower);
   } catch(e) {
-    // Fallback: "12.4,8.1"
     const parts = text.split(',');
     if(parts.length === 2) ingest(parseFloat(parts[0]), parseFloat(parts[1]));
   }
 }
 
-// ══════════════════════════════════════════
-//  NOTIFICATIONS
-// ══════════════════════════════════════════
 function sendNotification(type, title, detail) {
   document.getElementById('emptyNotif').style.display = 'none';
   const log  = document.getElementById('notifList');
@@ -890,7 +726,7 @@ function showToast(type, title, msg) {
 async function requestNotifPerm() {
   const p = await Notification.requestPermission();
   if(p==='granted') document.getElementById('permBanner').classList.remove('show');
-  else showToast('warn','Permission denied','Check your browser notification settings');
+  else showToast('warn','Permission denied','Check notification settings');
 }
 
 if(Notification.permission !== 'granted') document.getElementById('permBanner').classList.add('show');
@@ -906,8 +742,6 @@ function clearAll() {
   document.getElementById('statGoodPct').textContent='—';
   updateChart();
 }
-
-// ── Init spine ──
 updateSpine(0, 0);
 </script>
 </body>

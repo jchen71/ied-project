@@ -26,9 +26,10 @@
   * { margin:0; padding:0; box-sizing:border-box; }
   body { background:var(--bg); color:var(--text); font-family:'Inter',sans-serif; min-height:100vh; }
 
+  /* ── topbar ── */
   .topbar {
     background:var(--surface); border-bottom:1px solid var(--border);
-    padding:0 24px; height:56px;
+    padding:0 24px; height:52px;
     display:flex; align-items:center; justify-content:space-between;
     position:sticky; top:0; z-index:100;
   }
@@ -39,26 +40,44 @@
     border-radius:6px; display:flex; align-items:center; justify-content:center;
   }
   .logo-icon svg { width:14px; height:14px; fill:none; stroke:#fff; stroke-width:2; stroke-linecap:round; }
-  .topbar-right { display:flex; align-items:center; gap:12px; }
   .badge { font-family:'JetBrains Mono',monospace; font-size:.7rem; padding:3px 8px; border-radius:20px; letter-spacing:.5px; border:1px solid; }
   .badge-connected    { background:rgba(63,185,80,.1);  color:var(--green);  border-color:var(--green-dim); }
   .badge-disconnected { background:rgba(248,81,73,.1);  color:var(--red);    border-color:#6e2a27; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+  .badge-demo         { background:rgba(240,136,62,.12); color:var(--orange); border-color:rgba(240,136,62,.4); }
 
+  /* ── tabs ── */
+  .tabs {
+    background:var(--surface); border-bottom:1px solid var(--border);
+    display:flex; padding:0 24px; gap:0;
+    position:sticky; top:52px; z-index:99;
+  }
+  .tab {
+    padding:12px 18px; font-size:.83rem; cursor:pointer;
+    border-bottom:2px solid transparent; color:var(--text-dim);
+    transition:all .15s; white-space:nowrap;
+  }
+  .tab:hover { color:var(--text); }
+  .tab.active { color:var(--text); border-bottom-color:var(--blue); font-weight:500; }
+
+  .tab-panel { display:none; }
+  .tab-panel.active { display:block; }
+
+  /* ── layout ── */
   .main { max-width:1100px; margin:0 auto; padding:24px; display:flex; flex-direction:column; gap:20px; }
 
   .card { background:var(--surface); border:1px solid var(--border); border-radius:10px; overflow:hidden; }
   .card-header {
-    padding:14px 18px; border-bottom:1px solid var(--border);
+    padding:12px 18px; border-bottom:1px solid var(--border);
     display:flex; align-items:center; justify-content:space-between;
     background:rgba(255,255,255,.01);
   }
-  .card-title { font-size:.78rem; font-weight:600; color:var(--text-dim); text-transform:uppercase; letter-spacing:1px; display:flex; align-items:center; gap:8px; }
+  .card-title { font-size:.75rem; font-weight:600; color:var(--text-dim); text-transform:uppercase; letter-spacing:1px; display:flex; align-items:center; gap:8px; }
   .card-body { padding:18px; }
 
+  /* ── buttons ── */
   .btn {
     font-family:'Inter',sans-serif; font-size:.82rem; font-weight:500;
-    padding:8px 18px; border-radius:6px; border:1px solid;
+    padding:7px 16px; border-radius:6px; border:1px solid;
     cursor:pointer; transition:all .15s; white-space:nowrap;
     display:inline-flex; align-items:center; gap:6px;
   }
@@ -70,85 +89,60 @@
   .btn-ghost   { background:transparent; border-color:var(--border); color:var(--text-dim); }
   .btn-ghost:hover { background:var(--surface2); color:var(--text); }
   .btn-sm { padding:5px 12px; font-size:.76rem; }
-
-  .btn-motor-on {
-    background:rgba(63,185,80,.15); border-color:var(--green-dim);
-    color:var(--green);
-  }
-  .btn-motor-on:hover { background:rgba(63,185,80,.28); }
-  .btn-motor-off {
-    background:rgba(248,81,73,.12); border-color:#6e2a27;
-    color:var(--red);
-  }
+  .btn-demo { background:rgba(240,136,62,.12); border-color:rgba(240,136,62,.4); color:var(--orange); }
+  .btn-demo:hover { background:rgba(240,136,62,.22); }
+  .btn-demo-stop { background:rgba(248,81,73,.1); border-color:#6e2a27; color:var(--red); }
+  .btn-demo-stop:hover { background:rgba(248,81,73,.2); }
+  .btn-motor-on  { background:rgba(63,185,80,.15);  border-color:var(--green-dim); color:var(--green); }
+  .btn-motor-on:hover  { background:rgba(63,185,80,.28); }
+  .btn-motor-off { background:rgba(248,81,73,.12); border-color:#6e2a27; color:var(--red); }
   .btn-motor-off:hover { background:rgba(248,81,73,.22); }
 
-  .device-controls {
-    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
-    margin-top:14px; padding-top:14px;
-    border-top:1px solid var(--border);
-  }
-  .device-controls-label {
-    font-size:.72rem; color:var(--text-muted);
-    text-transform:uppercase; letter-spacing:.8px;
-    flex-basis:100%; margin-bottom:2px;
-  }
-  .ctrl-hint {
-    font-size:.7rem; color:var(--text-muted); margin-left:auto;
-    font-style:italic;
-  }
-
-  .connect-inner { display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-top:10px; }
+  /* ── device row ── */
+  .device-row { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
   .device-display {
     font-family:'JetBrains Mono',monospace; font-size:.82rem;
     background:var(--surface2); border:1px solid var(--border); border-radius:6px;
-    padding:8px 14px; flex:1; min-width:200px;
+    padding:7px 14px; flex:1; min-width:200px;
   }
   .device-name { color:var(--text); font-weight:500; }
-  .device-addr { color:var(--text-muted); font-size:.72rem; }
-  .perm-banner {
-    background:rgba(240,136,62,.08); border:1px solid rgba(240,136,62,.3);
-    border-radius:8px; padding:12px 14px; font-size:.8rem; color:var(--orange);
-    display:none; gap:10px; align-items:flex-start; margin-bottom:12px;
-  }
-  .perm-banner.show { display:flex; }
+  .device-addr { color:var(--text-muted); font-size:.72rem; margin-top:1px; }
+  .ctrl-divider { width:1px; height:28px; background:var(--border); margin:0 2px; flex-shrink:0; }
 
-  .posture-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
-  @media(max-width:700px) { .posture-grid { grid-template-columns:1fr; } }
+  /* ── live dot ── */
+  .live-dot { width:8px; height:8px; border-radius:50%; background:var(--green); box-shadow:0 0 6px var(--green); display:inline-block; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+  .live-dot.pulsing { animation:pulse 1.4s infinite; }
 
-  .spine-panel { display:flex; align-items:center; justify-content:center; gap:28px; padding:20px 10px; }
-  .spine-svg-wrap { position:relative; }
+  /* ── spine panel ── */
+  .spine-panel { display:flex; align-items:center; gap:28px; padding:10px 0; }
   .spine-info { flex:1; display:flex; flex-direction:column; gap:14px; }
 
-  .angle-row { display:flex; flex-direction:column; gap:4px; }
+  .angle-row { display:flex; flex-direction:column; gap:3px; }
   .angle-label { font-size:.72rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:.8px; }
-  .angle-val {
-    font-family:'JetBrains Mono',monospace; font-size:1.6rem; font-weight:500;
-    color:var(--text); transition:color .3s;
-  }
+  .angle-val { font-family:'JetBrains Mono',monospace; font-size:1.6rem; font-weight:500; color:var(--text); transition:color .3s; }
   .angle-val.warn { color:var(--orange); }
   .angle-val.bad  { color:var(--red); }
 
   .posture-status {
-    margin-top:4px; padding:10px 14px; border-radius:8px; border:1px solid var(--border);
-    background:rgba(63,185,80,.06); border-color:var(--green-dim);
-    transition:all .3s;
+    padding:10px 14px; border-radius:8px; border:1px solid var(--green-dim);
+    background:rgba(63,185,80,.06); transition:all .3s;
   }
   .posture-status.bad  { background:rgba(248,81,73,.08);  border-color:#6e2a27; }
   .posture-status.warn { background:rgba(240,136,62,.08); border-color:rgba(240,136,62,.4); }
-
-  .status-label { font-size:.72rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:.8px; margin-bottom:3px; }
-  .status-text  { font-size:.92rem; font-weight:600; color:var(--green); transition:color .3s; }
+  .status-label { font-size:.72rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:.8px; margin-bottom:2px; }
+  .status-text  { font-size:.9rem; font-weight:600; color:var(--green); transition:color .3s; }
   .posture-status.bad  .status-text { color:var(--red); }
   .posture-status.warn .status-text { color:var(--orange); }
-  .status-sub   { font-size:.75rem; color:var(--text-muted); margin-top:3px; }
+  .status-sub   { font-size:.74rem; color:var(--text-muted); margin-top:2px; }
 
-  .diff-bar-wrap { margin-top:6px; }
+  .diff-bar-wrap { margin-top:2px; }
   .diff-bar-label { font-size:.72rem; color:var(--text-muted); display:flex; justify-content:space-between; margin-bottom:5px; }
-  .diff-bar-track { height:6px; background:var(--surface2); border-radius:3px; position:relative; }
+  .diff-bar-track { height:6px; background:var(--surface2); border-radius:3px; }
   .diff-bar-fill  { height:100%; border-radius:3px; background:var(--green); transition:width .4s, background .4s; }
 
+  /* ── history tab ── */
   .chart-wrap { height:180px; position:relative; }
-
   .history-meta {
     display:flex; justify-content:space-between; align-items:flex-end;
     margin-bottom:10px;
@@ -156,25 +150,27 @@
   .history-score-block { display:flex; flex-direction:column; gap:2px; }
   .history-score-label { font-size:.68rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:.8px; }
   .history-score-val {
-    font-family:'JetBrains Mono',monospace; font-size:2rem; font-weight:500;
-    line-height:1; transition:color .4s;
+    font-family:'JetBrains Mono',monospace; font-size:2rem; font-weight:500; line-height:1; transition:color .4s;
   }
   .history-score-val.good { color:var(--green); }
   .history-score-val.warn { color:var(--orange); }
   .history-score-val.bad  { color:var(--red); }
-  .history-trend {
-    font-size:.72rem; color:var(--text-muted);
-    display:flex; flex-direction:column; align-items:flex-end; gap:3px;
-  }
+  .history-trend { font-size:.72rem; color:var(--text-muted); display:flex; flex-direction:column; align-items:flex-end; gap:3px; }
   .trend-val { font-family:'JetBrains Mono',monospace; font-size:.82rem; }
   .trend-up   { color:var(--green); }
   .trend-down { color:var(--red); }
   .trend-flat { color:var(--text-muted); }
 
-  .notif-list { display:flex; flex-direction:column; gap:6px; max-height:220px; overflow-y:auto; }
+  .chart-placeholder {
+    display:flex; align-items:center; justify-content:center;
+    height:180px; border:1px dashed var(--border); border-radius:8px;
+    color:var(--text-muted); font-size:.8rem; gap:8px;
+  }
+
+  /* ── notifications ── */
+  .notif-list { display:flex; flex-direction:column; gap:6px; max-height:280px; overflow-y:auto; }
   .notif-list::-webkit-scrollbar { width:4px; }
   .notif-list::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
-
   .notif-item {
     display:flex; align-items:flex-start; gap:10px;
     background:var(--surface2); border:1px solid var(--border);
@@ -185,43 +181,36 @@
   .notif-item.warn  { border-left-color:var(--orange); }
   .notif-item.ok    { border-left-color:var(--green); }
   @keyframes slideIn { from{opacity:0;transform:translateY(-4px)} to{opacity:1;transform:none} }
-
   .notif-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:4px; }
   .alert .notif-dot { background:var(--red); }
   .warn  .notif-dot { background:var(--orange); }
   .ok    .notif-dot { background:var(--green); }
   .notif-body { flex:1; }
-  .notif-title { font-weight:500; color:var(--text); }
+  .notif-title  { font-weight:500; color:var(--text); }
   .notif-detail { color:var(--text-dim); margin-top:2px; font-size:.72rem; }
-  .empty-state { text-align:center; padding:30px; color:var(--text-muted); font-size:.82rem; }
+  .empty-state  { text-align:center; padding:28px; color:var(--text-muted); font-size:.82rem; }
 
-  .toast-container { position:fixed; top:66px; right:20px; z-index:999; display:flex; flex-direction:column; gap:8px; pointer-events:none; }
+  /* ── toast ── */
+  .toast-container { position:fixed; top:72px; right:20px; z-index:999; display:flex; flex-direction:column; gap:8px; pointer-events:none; }
   .toast {
     background:var(--surface); border:1px solid var(--border); border-radius:10px;
-    padding:14px 16px; min-width:300px; max-width:360px;
+    padding:12px 14px; min-width:280px; max-width:340px;
     display:flex; gap:12px; align-items:flex-start;
     box-shadow:0 8px 32px rgba(0,0,0,.5);
     animation:toastIn .3s cubic-bezier(.34,1.56,.64,1);
     pointer-events:all; border-left:3px solid var(--red);
   }
-  .toast.warn  { border-left-color:var(--orange); }
-  .toast.ok    { border-left-color:var(--green); }
+  .toast.warn { border-left-color:var(--orange); }
+  .toast.ok   { border-left-color:var(--green); }
   @keyframes toastIn { from{opacity:0;transform:translateX(16px) scale(.95)} to{opacity:1;transform:none} }
   .toast-body  { flex:1; }
-  .toast-title { font-size:.85rem; font-weight:600; margin-bottom:3px; }
-  .toast-msg   { font-size:.77rem; color:var(--text-dim); }
-  .toast-close { background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1rem; }
+  .toast-title { font-size:.85rem; font-weight:600; margin-bottom:2px; }
+  .toast-msg   { font-size:.76rem; color:var(--text-dim); }
+  .toast-close { background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1rem; padding:0; }
 
-  .live-dot { width:8px; height:8px; border-radius:50%; background:var(--green); box-shadow:0 0 6px var(--green); animation:pulse 1.5s infinite; display:inline-block; }
-
-  @keyframes rezeroFlash {
-    0%   { background:rgba(88,166,255,.35); border-color:var(--blue); color:var(--blue); }
-    100% { background:transparent; }
-  }
-  .btn-rezero-flash { animation: rezeroFlash .6s ease-out forwards; }
-
-  .alert-settings { display:flex; flex-direction:column; gap:10px; }
-  .alert-settings .setting-row {
+  /* ── settings ── */
+  .alert-settings { display:flex; flex-direction:column; gap:8px; }
+  .setting-row {
     display:flex; align-items:center; justify-content:space-between;
     padding:10px 14px; background:var(--surface2); border:1px solid var(--border);
     border-radius:8px;
@@ -229,32 +218,20 @@
   .setting-info { display:flex; flex-direction:column; gap:2px; }
   .setting-title { font-size:.82rem; font-weight:500; color:var(--text); }
   .setting-desc  { font-size:.72rem; color:var(--text-muted); }
-
-  .toggle {
-    position:relative; width:38px; height:20px; flex-shrink:0;
-  }
+  .toggle { position:relative; width:38px; height:20px; flex-shrink:0; }
   .toggle input { opacity:0; width:0; height:0; }
-  .toggle-track {
-    position:absolute; inset:0; background:var(--border);
-    border-radius:20px; cursor:pointer; transition:background .2s;
-  }
+  .toggle-track { position:absolute; inset:0; background:var(--border); border-radius:20px; cursor:pointer; transition:background .2s; }
   .toggle input:checked + .toggle-track { background:var(--green-dim); }
-  .toggle-thumb {
-    position:absolute; top:3px; left:3px;
-    width:14px; height:14px; border-radius:50%;
-    background:#fff; transition:transform .2s; pointer-events:none;
-  }
+  .toggle-thumb { position:absolute; top:3px; left:3px; width:14px; height:14px; border-radius:50%; background:#fff; transition:transform .2s; pointer-events:none; }
   .toggle input:checked ~ .toggle-thumb { transform:translateX(18px); }
-
   .threshold-row {
-    margin-top:4px; padding:10px 14px;
-    background:var(--surface2); border:1px solid var(--border); border-radius:8px;
+    padding:10px 14px; background:var(--surface2); border:1px solid var(--border); border-radius:8px;
     display:flex; flex-direction:column; gap:8px;
   }
   .threshold-header { display:flex; justify-content:space-between; align-items:center; }
   .threshold-label { font-size:.82rem; font-weight:500; color:var(--text); }
-  .threshold-val { font-family:'JetBrains Mono',monospace; font-size:.82rem; color:var(--blue); }
-  .threshold-desc { font-size:.72rem; color:var(--text-muted); }
+  .threshold-val   { font-family:'JetBrains Mono',monospace; font-size:.82rem; color:var(--blue); }
+  .threshold-desc  { font-size:.72rem; color:var(--text-muted); }
   input[type=range] {
     -webkit-appearance:none; width:100%; height:5px;
     background:var(--border); border-radius:3px; outline:none; cursor:pointer;
@@ -262,6 +239,20 @@
   input[type=range]::-webkit-slider-thumb {
     -webkit-appearance:none; width:15px; height:15px;
     background:var(--blue); border-radius:50%; box-shadow:0 0 6px rgba(88,166,255,.4);
+  }
+
+  /* ── perm banner ── */
+  .perm-banner {
+    background:rgba(240,136,62,.08); border:1px solid rgba(240,136,62,.3);
+    border-radius:8px; padding:10px 14px; font-size:.8rem; color:var(--orange);
+    display:none; gap:10px; align-items:flex-start; margin-bottom:12px;
+  }
+  .perm-banner.show { display:flex; }
+
+  @media(max-width:700px) {
+    .spine-panel { flex-direction:column; }
+    .device-row  { flex-direction:column; align-items:stretch; }
+    .ctrl-divider { display:none; }
   }
 </style>
 </head>
@@ -274,297 +265,331 @@
     </div>
     ESP32 Posture Monitor
   </div>
-  <div class="topbar-right">
-    <span class="badge badge-disconnected" id="statusBadge">DISCONNECTED</span>
-    <button class="btn btn-ghost btn-sm" onclick="clearAll()">Clear</button>
-  </div>
+  <span class="badge badge-disconnected" id="statusBadge">DISCONNECTED</span>
+</div>
+
+<div class="tabs">
+  <div class="tab active"   id="tab-btn-monitor"  onclick="switchTab('monitor')">Monitor</div>
+  <div class="tab"          id="tab-btn-history"  onclick="switchTab('history')">Session history</div>
+  <div class="tab"          id="tab-btn-settings" onclick="switchTab('settings')">Settings</div>
 </div>
 
 <div class="toast-container" id="toastContainer"></div>
 
-<div class="main">
+<!-- ════════════════════════ MONITOR TAB ════════════════════════ -->
+<div class="tab-panel active" id="panel-monitor">
+  <div class="main">
 
-  <div class="card">
-    <div class="card-header"><span class="card-title">Bluetooth Connection</span></div>
-    <div class="card-body">
-      <div class="perm-banner" id="permBanner">
-        <span>&#9888;</span>
-        <div>Allow notifications to receive posture alerts in the background.
-          <button class="btn btn-ghost btn-sm" style="margin-left:10px;" onclick="requestNotifPerm()">Grant permission</button>
-        </div>
-      </div>
-      <div class="connect-inner">
-        <div class="device-display">
-          <div class="device-name" id="deviceName">No device paired</div>
-          <div class="device-addr" id="deviceAddr">Click "Connect" to pair via Bluetooth</div>
-        </div>
-        <button class="btn btn-primary" id="connectBtn" onclick="connectBluetooth()">Connect</button>
-        <button class="btn btn-danger" id="disconnectBtn" style="display:none" onclick="disconnectBluetooth()">Disconnect</button>
-      </div>
-
-      <div class="device-controls">
-        <div class="device-controls-label">Device controls</div>
-        <button class="btn btn-motor-on" id="motorBtn" onclick="toggleMotor()" title="Send motor ON/OFF command to ESP32">
-          Motor: ON
-        </button>
-        <button class="btn btn-ghost" id="rezeroBtn" onclick="rezeroIMU()" title="Capture current position as new zero reference on ESP32">
-          Re-zero IMUs
-        </button>
-        <span class="ctrl-hint" id="bleCtrlHint">Connect via BLE to send commands</span>
-      </div>
-
-
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-header">
-      <span class="card-title"><span class="live-dot" id="liveDot" style="opacity:.3"></span>&nbsp; Live Posture Analysis</span>
-
-    </div>
-    <div class="card-body">
-      <div class="posture-grid">
-
-        <div>
-          <div style="font-size:.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;">Spine view — side profile</div>
-          <div class="spine-panel">
-            <div class="spine-svg-wrap">
-              <svg id="spineSvg" width="140" height="270" viewBox="-25 0 160 270">
-                <line x1="55" y1="10" x2="55" y2="250" stroke="#30363d" stroke-width="1" stroke-dasharray="4,4"/>
-                <text x="58" y="18" font-size="9" fill="#484f58" font-family="JetBrains Mono,monospace">vertical</text>
-                <circle id="head" cx="55" cy="32" r="14" fill="#21262d" stroke="#58a6ff" stroke-width="1.5"/>
-                <text id="headText" x="55" y="36" text-anchor="middle" font-size="9" fill="#8b949e" font-family="sans-serif">head</text>
-                <path id="upperSpinePath" d="" fill="none" stroke="#58a6ff" stroke-width="4" stroke-linecap="round"/>
-                <g id="upperTicks"></g>
-                <path id="lowerSpinePath" d="" fill="none" stroke="#3fb950" stroke-width="4" stroke-linecap="round"/>
-                <g id="lowerTicks"></g>
-                <ellipse id="pelvis" cx="55" cy="220" rx="20" ry="8" fill="#21262d" stroke="#484f58" stroke-width="1.5"/>
-
-              </svg>
-            </div>
-            <div class="spine-info">
-              <div class="angle-row">
-                <div class="angle-label">Upper back</div>
-                <div class="angle-val" id="upperVal">0.0°</div>
-              </div>
-              <div class="angle-row">
-                <div class="angle-label">Lower back</div>
-                <div class="angle-val" id="lowerVal">0.0°</div>
-              </div>
-              <div class="angle-row">
-                <div class="angle-label">Spinal divergence</div>
-                <div class="angle-val" id="diffVal">0.0°</div>
-                <div style="font-size:.7rem;color:var(--text-muted);margin-top:2px;">difference between segments</div>
-              </div>
-              <div class="diff-bar-wrap">
-                <div class="diff-bar-label">
-                  <span>Curvature severity</span>
-                  <span id="diffPct">0%</span>
-                </div>
-                <div class="diff-bar-track"><div class="diff-bar-fill" id="diffBar" style="width:0%"></div></div>
-              </div>
-              <div class="posture-status" id="postureStatus">
-                <div class="status-label">Posture assessment</div>
-                <div class="status-text" id="statusText">Good — spine aligned</div>
-                <div class="status-sub" id="statusSub">Keep it up!</div>
-              </div>
-            </div>
+    <!-- device / controls card -->
+    <div class="card">
+      <div class="card-header"><span class="card-title">Device &amp; controls</span></div>
+      <div class="card-body">
+        <div class="perm-banner" id="permBanner">
+          <span>&#9888;</span>
+          <div>Allow notifications to receive posture alerts in the background.
+            <button class="btn btn-ghost btn-sm" style="margin-left:10px;" onclick="requestNotifPerm()">Grant permission</button>
           </div>
         </div>
 
-        <div>
-          <div class="history-meta">
-            <div class="history-score-block">
-              <div class="history-score-label">Current score</div>
-              <div class="history-score-val good" id="historyScore">—</div>
+        <div class="device-row">
+          <div class="device-display">
+            <div class="device-name" id="deviceName">No device paired</div>
+            <div class="device-addr" id="deviceAddr">Click "Connect" to pair via Bluetooth</div>
+          </div>
+
+          <!-- connect / disconnect -->
+          <button class="btn btn-primary" id="connectBtn"    onclick="connectBluetooth()">Connect</button>
+          <button class="btn btn-danger"  id="disconnectBtn" onclick="disconnectBluetooth()" style="display:none">Disconnect</button>
+
+          <!-- divider: only visible when device controls are shown -->
+          <div class="ctrl-divider" id="ctrlDivider" style="display:none"></div>
+
+          <!-- device controls: hidden until connected or demo -->
+          <button class="btn btn-motor-on" id="motorBtn"  onclick="toggleMotor()"  style="display:none" title="Toggle vibration motor on ESP32">Motor: ON</button>
+          <button class="btn btn-ghost"    id="rezeroBtn" onclick="rezeroIMU()"     style="display:none" title="Capture current position as new zero on ESP32">Re-zero IMUs</button>
+
+          <!-- demo always visible -->
+          <div class="ctrl-divider"></div>
+          <button class="btn btn-demo" id="demoBtn" onclick="toggleDemo()">Demo</button>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- live posture card -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">
+          <span class="live-dot" id="liveDot" style="opacity:.25"></span>
+          Live posture analysis
+        </span>
+      </div>
+      <div class="card-body">
+        <div class="spine-panel">
+
+          <!-- spine SVG -->
+          <svg id="spineSvg" width="140" height="270" viewBox="-25 0 160 270">
+            <line x1="55" y1="10" x2="55" y2="250" stroke="#30363d" stroke-width="1" stroke-dasharray="4,4"/>
+            <text x="58" y="18" font-size="9" fill="#484f58" font-family="JetBrains Mono,monospace">vertical</text>
+            <circle id="head" cx="55" cy="32" r="14" fill="#21262d" stroke="#58a6ff" stroke-width="1.5"/>
+            <text id="headText" x="55" y="36" text-anchor="middle" font-size="9" fill="#8b949e" font-family="sans-serif">head</text>
+            <path id="upperSpinePath" d="" fill="none" stroke="#58a6ff" stroke-width="4" stroke-linecap="round"/>
+            <g id="upperTicks"></g>
+            <path id="lowerSpinePath" d="" fill="none" stroke="#3fb950" stroke-width="4" stroke-linecap="round"/>
+            <g id="lowerTicks"></g>
+            <ellipse id="pelvis" cx="55" cy="220" rx="20" ry="8" fill="#21262d" stroke="#484f58" stroke-width="1.5"/>
+          </svg>
+
+          <!-- angle readouts -->
+          <div class="spine-info">
+            <div class="angle-row">
+              <div class="angle-label">Upper back</div>
+              <div class="angle-val" id="upperVal">0.0°</div>
             </div>
-            <div class="history-trend">
-              <span style="font-size:.68rem;text-transform:uppercase;letter-spacing:.8px;">Trend vs. last 10</span>
-              <span class="trend-val trend-flat" id="historyTrend">—</span>
+            <div class="angle-row">
+              <div class="angle-label">Lower back</div>
+              <div class="angle-val" id="lowerVal">0.0°</div>
+            </div>
+            <div class="angle-row">
+              <div class="angle-label">Spinal divergence</div>
+              <div class="angle-val" id="diffVal">0.0°</div>
+              <div style="font-size:.7rem;color:var(--text-muted);margin-top:2px;">difference between segments</div>
+            </div>
+            <div class="diff-bar-wrap">
+              <div class="diff-bar-label">
+                <span>Curvature severity</span>
+                <span id="diffPct">0%</span>
+              </div>
+              <div class="diff-bar-track"><div class="diff-bar-fill" id="diffBar" style="width:0%"></div></div>
+            </div>
+            <div class="posture-status" id="postureStatus">
+              <div class="status-label">Posture assessment</div>
+              <div class="status-text" id="statusText">Good — spine aligned</div>
+              <div class="status-sub"  id="statusSub">Keep it up!</div>
             </div>
           </div>
-          <div class="chart-wrap">
-            <canvas id="angleChart"></canvas>
-          </div>
-          <div style="display:flex;gap:16px;margin-top:10px;font-size:.72rem;color:var(--text-dim);">
-            <span><span style="display:inline-block;width:10px;height:3px;background:#3fb950;border-radius:2px;vertical-align:middle;margin-right:5px;"></span>Posture score (0–100)</span>
-            <span><span style="display:inline-block;width:10px;height:3px;background:#58a6ff;border-radius:2px;vertical-align:middle;margin-right:5px;"></span>10-reading average</span>
-          </div>
-        </div>
 
+        </div>
       </div>
     </div>
+
   </div>
-
-  <div class="card">
-    <div class="card-header"><span class="card-title">Alert Settings</span></div>
-    <div class="card-body">
-      <div class="alert-settings">
-
-        <div class="setting-row">
-          <div class="setting-info">
-            <div class="setting-title">Bad posture detected</div>
-            <div class="setting-desc">Alert when spinal divergence exceeds the threshold</div>
-          </div>
-          <label class="toggle">
-            <input type="checkbox" id="chkBadPosture" checked>
-            <div class="toggle-track"></div>
-            <div class="toggle-thumb"></div>
-          </label>
-        </div>
-
-        <div class="setting-row">
-          <div class="setting-info">
-            <div class="setting-title">Connection events</div>
-            <div class="setting-desc">Alert on device connect and disconnect</div>
-          </div>
-          <label class="toggle">
-            <input type="checkbox" id="chkConnection" checked>
-            <div class="toggle-track"></div>
-            <div class="toggle-thumb"></div>
-          </label>
-        </div>
-
-        <div class="setting-row">
-          <div class="setting-info">
-            <div class="setting-title">Posture corrected</div>
-            <div class="setting-desc">Alert when spine returns to alignment after a bad reading</div>
-          </div>
-          <label class="toggle">
-            <input type="checkbox" id="chkGoodReturn" checked>
-            <div class="toggle-track"></div>
-            <div class="toggle-thumb"></div>
-          </label>
-        </div>
-
-        <div class="threshold-row">
-          <div class="threshold-header">
-            <div class="threshold-label">Divergence threshold</div>
-            <span class="threshold-val" id="threshDisplay">10°</span>
-          </div>
-          <div class="threshold-desc">Alert fires when |upper − lower| exceeds this value</div>
-          <input type="range" id="threshSlider" min="5" max="30" value="10" step="1" oninput="updateThresh()">
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-header">
-      <span class="card-title">Notification Log</span>
-      <span style="font-size:.72rem;color:var(--text-muted);" id="notifCount">0 sent</span>
-    </div>
-    <div class="card-body" style="padding:12px 18px;">
-      <div class="notif-list" id="notifList">
-        <div class="empty-state" id="emptyNotif">No notifications yet — monitoring posture…</div>
-      </div>
-    </div>
-  </div>
-
 </div>
 
+<!-- ════════════════════════ HISTORY TAB ════════════════════════ -->
+<div class="tab-panel" id="panel-history">
+  <div class="main">
+
+    <div class="card">
+      <div class="card-header"><span class="card-title">Session score &amp; trend</span></div>
+      <div class="card-body">
+        <div class="history-meta">
+          <div class="history-score-block">
+            <div class="history-score-label">Current score</div>
+            <div class="history-score-val good" id="historyScore">—</div>
+          </div>
+          <div class="history-trend">
+            <span style="font-size:.68rem;text-transform:uppercase;letter-spacing:.8px;">Trend vs. session start</span>
+            <span class="trend-val trend-flat" id="historyTrend">—</span>
+          </div>
+        </div>
+
+        <!-- placeholder shown before any data -->
+        <div class="chart-placeholder" id="chartPlaceholder">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#484f58" stroke-width="1.5"><polyline points="1,14 5,8 9,10 15,3"/></svg>
+          Connect a device (or run Demo) to start recording
+        </div>
+
+        <!-- chart shown after data arrives -->
+        <div class="chart-wrap" id="chartWrap" style="display:none">
+          <canvas id="angleChart"></canvas>
+        </div>
+
+        <div style="display:flex;gap:16px;margin-top:10px;font-size:.72rem;color:var(--text-dim);">
+          <span><span style="display:inline-block;width:10px;height:3px;background:#3fb950;border-radius:2px;vertical-align:middle;margin-right:5px;"></span>Posture score (0–100)</span>
+          <span><span style="display:inline-block;width:10px;height:3px;background:#58a6ff;border-radius:2px;vertical-align:middle;margin-right:5px;"></span>10-reading average</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Notification log</span>
+        <span style="font-size:.72rem;color:var(--text-muted);" id="notifCount">0 sent</span>
+      </div>
+      <div class="card-body" style="padding:12px 18px;">
+        <div class="notif-list" id="notifList">
+          <div class="empty-state" id="emptyNotif">No notifications yet — monitoring posture…</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════ SETTINGS TAB ════════════════════════ -->
+<div class="tab-panel" id="panel-settings">
+  <div class="main">
+
+    <div class="card">
+      <div class="card-header"><span class="card-title">Alert settings</span></div>
+      <div class="card-body">
+        <div class="alert-settings">
+
+          <div class="setting-row">
+            <div class="setting-info">
+              <div class="setting-title">Bad posture detected</div>
+              <div class="setting-desc">Alert when spinal divergence exceeds the threshold</div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="chkBadPosture" checked>
+              <div class="toggle-track"></div><div class="toggle-thumb"></div>
+            </label>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-info">
+              <div class="setting-title">Connection events</div>
+              <div class="setting-desc">Alert on device connect and disconnect</div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="chkConnection" checked>
+              <div class="toggle-track"></div><div class="toggle-thumb"></div>
+            </label>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-info">
+              <div class="setting-title">Posture corrected</div>
+              <div class="setting-desc">Alert when spine returns to alignment after a bad reading</div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="chkGoodReturn" checked>
+              <div class="toggle-track"></div><div class="toggle-thumb"></div>
+            </label>
+          </div>
+
+          <div class="threshold-row">
+            <div class="threshold-header">
+              <div class="threshold-label">Divergence threshold</div>
+              <span class="threshold-val" id="threshDisplay">10°</span>
+            </div>
+            <div class="threshold-desc">Alert fires when |upper − lower| exceeds this value</div>
+            <input type="range" id="threshSlider" min="5" max="30" value="10" step="1" oninput="updateThresh()">
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-title">Data</span></div>
+      <div class="card-body">
+        <button class="btn btn-ghost" onclick="clearAll()">Clear all session data</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════ SCRIPTS ════════════════════════ -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
+// ── state ──────────────────────────────────────────────────────
 const MAX_PTS = 60;
-let upperHistory = new Array(MAX_PTS).fill(0);
-let lowerHistory = new Array(MAX_PTS).fill(0);
-let packets = 0, alertCount = 0, goodCount = 0;
+let scoreHistory = new Array(MAX_PTS).fill(null);
+let rawScoreLog  = [];
 let lastAlertTime = 0, wasPostureBad = false;
 let btDevice = null, btChar = null;
+let motorEnabled = true;
+let demoRunning = false, demoInterval = null;
+let demoPhase = 0, demoTick = 0;
+let chartInitialised = false;
 
 const SERVICE_UUID = '0000ffe0-0000-1000-8000-00805f9b34fb';
 const CHAR_UUID    = '0000ffe1-0000-1000-8000-00805f9b34fb';
 
-let scoreHistory = new Array(MAX_PTS).fill(null);
-let rawScoreLog  = [];
-
-function calcScore(upper, lower) {
-  const thresh = parseInt(document.getElementById('threshSlider').value);
-  const diff   = Math.abs(upper - lower);
-  return Math.max(0, Math.round(100 - (diff / (thresh * 2)) * 100));
-}
-
-function movingAvg(arr, window) {
-  return arr.map((v, i) => {
-    if(v === null) return null;
-    const slice = arr.slice(Math.max(0, i - window + 1), i + 1).filter(x => x !== null);
-    return slice.length ? Math.round(slice.reduce((a, b) => a + b, 0) / slice.length) : null;
+// ── tabs ───────────────────────────────────────────────────────
+function switchTab(name) {
+  ['monitor','history','settings'].forEach(t => {
+    document.getElementById('tab-btn-' + t).classList.toggle('active', t === name);
+    document.getElementById('panel-' + t).classList.toggle('active', t === name);
   });
 }
 
-const chartCtx = document.getElementById('angleChart').getContext('2d');
-const chart = new Chart(chartCtx, {
-  type: 'line',
-  data: {
-    labels: new Array(MAX_PTS).fill(''),
-    datasets: [
-      {
-        label: 'Score',
-        data: [...scoreHistory],
-        borderColor: '#3fb950',
-        backgroundColor: (ctx) => {
-          const g = ctx.chart.ctx.createLinearGradient(0, 0, 0, ctx.chart.height);
-          g.addColorStop(0,   'rgba(63,185,80,0.20)');
-          g.addColorStop(0.7, 'rgba(63,185,80,0.03)');
-          g.addColorStop(1,   'rgba(63,185,80,0)');
-          return g;
+// ── chart ──────────────────────────────────────────────────────
+let chart = null;
+
+function ensureChart() {
+  if (chartInitialised) return;
+  chartInitialised = true;
+  document.getElementById('chartPlaceholder').style.display = 'none';
+  document.getElementById('chartWrap').style.display = 'block';
+  const ctx = document.getElementById('angleChart').getContext('2d');
+  chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: new Array(MAX_PTS).fill(''),
+      datasets: [
+        {
+          label: 'Score',
+          data: [...scoreHistory],
+          borderColor: '#3fb950',
+          backgroundColor: (c) => {
+            const g = c.chart.ctx.createLinearGradient(0, 0, 0, c.chart.height);
+            g.addColorStop(0,   'rgba(63,185,80,0.20)');
+            g.addColorStop(0.7, 'rgba(63,185,80,0.03)');
+            g.addColorStop(1,   'rgba(63,185,80,0)');
+            return g;
+          },
+          borderWidth: 2, pointRadius: 0, tension: 0.45, fill: true, spanGaps: true
         },
-        borderWidth: 2,
-        pointRadius: 0,
-        tension: 0.45,
-        fill: true,
-        spanGaps: true
+        {
+          label: 'Avg',
+          data: new Array(MAX_PTS).fill(null),
+          borderColor: '#58a6ff', borderWidth: 1.5, borderDash: [5,4],
+          pointRadius: 0, tension: 0.45, fill: false, spanGaps: true
+        }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false, animation: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          enabled: true,
+          backgroundColor: '#1c2333', borderColor: '#30363d', borderWidth: 1,
+          titleColor: '#8b949e', bodyColor: '#e6edf3', padding: 10,
+          callbacks: {
+            title: () => '',
+            label: (c) => c.datasetIndex === 0 ? ` Score: ${c.raw}` : ` 10-pt avg: ${c.raw}`
+          }
+        }
       },
-      {
-        label: 'Avg',
-        data: new Array(MAX_PTS).fill(null),
-        borderColor: '#58a6ff',
-        borderWidth: 1.5,
-        borderDash: [5, 4],
-        pointRadius: 0,
-        tension: 0.45,
-        fill: false,
-        spanGaps: true
-      }
-    ]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false, animation: false,
-    plugins: {
-      legend: { display: false },
-      tooltip: {
-        enabled: true,
-        backgroundColor: '#1c2333',
-        borderColor: '#30363d',
-        borderWidth: 1,
-        titleColor: '#8b949e',
-        bodyColor: '#e6edf3',
-        padding: 10,
-        callbacks: {
-          title: () => '',
-          label: (ctx) => ctx.datasetIndex === 0 ? ` Score: ${ctx.raw}` : ` 10-pt avg: ${ctx.raw}`
+      scales: {
+        x: { display: false },
+        y: {
+          min: 0, max: 100,
+          ticks: { stepSize: 25, color: '#8b949e', font: { size: 11 },
+                   callback: v => v === 0 ? 'Poor' : v === 50 ? 'Fair' : v === 100 ? 'Good' : '' },
+          grid: { color: 'rgba(136,135,128,0.12)' },
+          border: { display: false }
         }
       }
-    },
-    scales: {
-      x: { display: false },
-      y: {
-        min: 0, max: 100,
-        ticks: {
-          stepSize: 25,
-          color: '#8b949e',
-          font: { size: 11 },
-          callback: v => v === 0 ? 'Poor' : v === 50 ? 'Fair' : v === 100 ? 'Good' : ''
-        },
-        grid: { color: 'rgba(136,135,128,0.12)' },
-        border: { display: false }
-      }
     }
-  }
-});
+  });
+}
+
+function movingAvg(arr, win) {
+  return arr.map((v, i) => {
+    if (v === null) return null;
+    const sl = arr.slice(Math.max(0, i - win + 1), i + 1).filter(x => x !== null);
+    return sl.length ? Math.round(sl.reduce((a,b) => a + b, 0) / sl.length) : null;
+  });
+}
 
 function updateChart() {
+  if (!chart) return;
   chart.data.datasets[0].data = [...scoreHistory];
   chart.data.datasets[1].data = movingAvg(scoreHistory, 10);
   chart.update('none');
@@ -574,75 +599,79 @@ function updateScoreDisplay(score) {
   const el = document.getElementById('historyScore');
   el.textContent = score;
   el.className = 'history-score-val ' + (score >= 70 ? 'good' : score >= 40 ? 'warn' : 'bad');
-
-  const trendEl = document.getElementById('historyTrend');
-  if(rawScoreLog.length >= 20) {
-    const recent = rawScoreLog.slice(-10).reduce((a,b)=>a+b,0) / 10;
-    const prev   = rawScoreLog.slice(-20,-10).reduce((a,b)=>a+b,0) / 10;
-    const delta  = Math.round(recent - prev);
-    if(delta > 2)       { trendEl.textContent = '+' + delta + ' improving'; trendEl.className = 'trend-val trend-up'; }
-    else if(delta < -2) { trendEl.textContent = delta + ' declining';       trendEl.className = 'trend-val trend-down'; }
-    else                { trendEl.textContent = 'stable';                   trendEl.className = 'trend-val trend-flat'; }
+  const tr = document.getElementById('historyTrend');
+  if (rawScoreLog.length >= 10) {
+    const half = Math.floor(rawScoreLog.length / 2);
+    const first  = rawScoreLog.slice(0, half).reduce((a,b)=>a+b,0) / half;
+    const second = rawScoreLog.slice(half).reduce((a,b)=>a+b,0) / (rawScoreLog.length - half);
+    const d = Math.round(second - first);
+    if (d > 2)       { tr.textContent = '+' + d + ' vs session start'; tr.className = 'trend-val trend-up'; }
+    else if (d < -2) { tr.textContent = d + ' vs session start';       tr.className = 'trend-val trend-down'; }
+    else             { tr.textContent = 'stable vs session start';     tr.className = 'trend-val trend-flat'; }
   } else {
-    trendEl.textContent = rawScoreLog.length < 10 ? 'collecting...' : 'need more data';
-    trendEl.className = 'trend-val trend-flat';
+    tr.textContent = 'collecting...';
+    tr.className = 'trend-val trend-flat';
   }
 }
 
+// ── spine rendering ────────────────────────────────────────────
+function cubicBezier(t, p0, p1, p2, p3) {
+  return Math.pow(1-t,3)*p0 + 3*Math.pow(1-t,2)*t*p1 + 3*(1-t)*t*t*p2 + Math.pow(t,3)*p3;
+}
+function cubicBezierDeriv(t, p0, p1, p2, p3) {
+  return 3*Math.pow(1-t,2)*(p1-p0) + 6*(1-t)*t*(p2-p1) + 3*t*t*(p3-p2);
+}
+
 function updateSpine(upperDeg, lowerDeg) {
-  const uAng = Math.max(-40, Math.min(55, upperDeg));
-  const lAng = Math.max(-40, Math.min(55, lowerDeg));
+  const uA = Math.max(-40, Math.min(55, upperDeg));
+  const lA = Math.max(-40, Math.min(55, lowerDeg));
   const toRad = d => d * Math.PI / 180;
   const pelvisX = 55, pelvisY = 220;
-  const LOWER_LEN = 80;
-  const UPPER_LEN = 90;
-  const HEAD_R    = 14;
-  const lRad = toRad(lAng);
+  const LOWER_LEN = 80, UPPER_LEN = 90, HEAD_R = 14;
+  const lRad = toRad(lA);
   const midX = pelvisX + LOWER_LEN * Math.sin(lRad);
   const midY = pelvisY - LOWER_LEN * Math.cos(lRad);
-  const uRad = toRad(uAng);
+  const uRad = toRad(uA);
   const topX = midX + UPPER_LEN * Math.sin(uRad);
   const topY = midY - UPPER_LEN * Math.cos(uRad);
-  const headCx = topX;
-  const headCy = topY - HEAD_R;
+  document.getElementById('head').setAttribute('cx', topX);
+  document.getElementById('head').setAttribute('cy', topY - HEAD_R);
+  const ht = document.getElementById('headText');
+  if (ht) { ht.setAttribute('x', topX); ht.setAttribute('y', topY - HEAD_R + 4); }
   document.getElementById('pelvis').setAttribute('cx', pelvisX);
   document.getElementById('pelvis').setAttribute('cy', pelvisY);
-  document.getElementById('head').setAttribute('cx', headCx);
-  document.getElementById('head').setAttribute('cy', headCy);
-  const headText = document.getElementById('headText');
-  if(headText){ headText.setAttribute('x', headCx); headText.setAttribute('y', headCy + 4); }
-  const l_cpx1 = pelvisX + lAng * 0.9, l_cpy1 = pelvisY - LOWER_LEN * 0.35;
-  const l_cpx2 = midX    - lAng * 0.3, l_cpy2 = pelvisY - LOWER_LEN * 0.7;
+
+  const lc1x = pelvisX + lA * 0.9, lc1y = pelvisY - LOWER_LEN * 0.35;
+  const lc2x = midX    - lA * 0.3, lc2y = pelvisY - LOWER_LEN * 0.7;
   document.getElementById('lowerSpinePath').setAttribute('d',
-    `M ${pelvisX} ${pelvisY} C ${l_cpx1} ${l_cpy1}, ${l_cpx2} ${l_cpy2}, ${midX} ${midY}`);
-  const u_cpx1 = midX + uAng * 0.9, u_cpy1 = midY - UPPER_LEN * 0.35;
-  const u_cpx2 = topX - uAng * 0.3, u_cpy2 = midY - UPPER_LEN * 0.7;
+    `M ${pelvisX} ${pelvisY} C ${lc1x} ${lc1y}, ${lc2x} ${lc2y}, ${midX} ${midY}`);
+
+  const uc1x = midX + uA * 0.9, uc1y = midY - UPPER_LEN * 0.35;
+  const uc2x = topX - uA * 0.3, uc2y = midY - UPPER_LEN * 0.7;
   document.getElementById('upperSpinePath').setAttribute('d',
-    `M ${midX} ${midY} C ${u_cpx1} ${u_cpy1}, ${u_cpx2} ${u_cpy2}, ${topX} ${topY}`);
-  const lowerTicks = document.getElementById('lowerTicks');
-  lowerTicks.innerHTML = '';
-  for(let i=1;i<=4;i++){
-    const t=i/5;
-    const bx=cubicBezier(t,pelvisX,l_cpx1,l_cpx2,midX), by=cubicBezier(t,pelvisY,l_cpy1,l_cpy2,midY);
-    const angle=Math.atan2(cubicBezierDeriv(t,pelvisY,l_cpy1,l_cpy2,midY),cubicBezierDeriv(t,pelvisX,l_cpx1,l_cpx2,midX))*180/Math.PI;
-    const r=document.createElementNS('http://www.w3.org/2000/svg','rect');
-    r.setAttribute('x',bx-6); r.setAttribute('y',by-2.5); r.setAttribute('width',12); r.setAttribute('height',5);
-    r.setAttribute('rx',1.5); r.setAttribute('fill','#21262d'); r.setAttribute('stroke','#3fb950'); r.setAttribute('stroke-width','1');
-    r.setAttribute('transform',`rotate(${angle},${bx},${by})`); lowerTicks.appendChild(r);
-  }
-  const upperTicks = document.getElementById('upperTicks');
-  upperTicks.innerHTML = '';
-  for(let i=1;i<=4;i++){
-    const t=i/5;
-    const bx=cubicBezier(t,midX,u_cpx1,u_cpx2,topX), by=cubicBezier(t,midY,u_cpy1,u_cpy2,topY);
-    const angle=Math.atan2(cubicBezierDeriv(t,midY,u_cpy1,u_cpy2,topY),cubicBezierDeriv(t,midX,u_cpx1,u_cpx2,topX))*180/Math.PI;
-    const r=document.createElementNS('http://www.w3.org/2000/svg','rect');
-    r.setAttribute('x',bx-5); r.setAttribute('y',by-2.5); r.setAttribute('width',10); r.setAttribute('height',5);
-    r.setAttribute('rx',1.5); r.setAttribute('fill','#21262d'); r.setAttribute('stroke','#58a6ff'); r.setAttribute('stroke-width','1');
-    r.setAttribute('transform',`rotate(${angle},${bx},${by})`); upperTicks.appendChild(r);
-  }
+    `M ${midX} ${midY} C ${uc1x} ${uc1y}, ${uc2x} ${uc2y}, ${topX} ${topY}`);
+
+  const drawTicks = (gId, p0x, p0y, c1x, c1y, c2x, c2y, p3x, p3y, col, count) => {
+    const g = document.getElementById(gId); g.innerHTML = '';
+    for (let i = 1; i <= count; i++) {
+      const t = i / (count + 1);
+      const bx = cubicBezier(t, p0x, c1x, c2x, p3x);
+      const by = cubicBezier(t, p0y, c1y, c2y, p3y);
+      const ang = Math.atan2(
+        cubicBezierDeriv(t, p0y, c1y, c2y, p3y),
+        cubicBezierDeriv(t, p0x, c1x, c2x, p3x)
+      ) * 180 / Math.PI;
+      const r = document.createElementNS('http://www.w3.org/2000/svg','rect');
+      r.setAttribute('x', bx-6); r.setAttribute('y', by-2.5); r.setAttribute('width', 12); r.setAttribute('height', 5);
+      r.setAttribute('rx', 1.5); r.setAttribute('fill', '#21262d'); r.setAttribute('stroke', col); r.setAttribute('stroke-width', '1');
+      r.setAttribute('transform', `rotate(${ang},${bx},${by})`); g.appendChild(r);
+    }
+  };
+  drawTicks('lowerTicks', pelvisX, pelvisY, lc1x, lc1y, lc2x, lc2y, midX, midY, '#3fb950', 4);
+  drawTicks('upperTicks', midX, midY, uc1x, uc1y, uc2x, uc2y, topX, topY, '#58a6ff', 4);
+
   let jDot = document.getElementById('junctionDot');
-  if(!jDot){
+  if (!jDot) {
     jDot = document.createElementNS('http://www.w3.org/2000/svg','circle');
     jDot.setAttribute('id','junctionDot'); jDot.setAttribute('r','4');
     jDot.setAttribute('fill','#1c2333'); jDot.setAttribute('stroke','#8b949e'); jDot.setAttribute('stroke-width','1.5');
@@ -651,98 +680,110 @@ function updateSpine(upperDeg, lowerDeg) {
   jDot.setAttribute('cx', midX); jDot.setAttribute('cy', midY);
 }
 
-function cubicBezier(t, p0, p1, p2, p3) {
-  return Math.pow(1-t,3)*p0 + 3*Math.pow(1-t,2)*t*p1 + 3*(1-t)*t*t*p2 + Math.pow(t,3)*p3;
-}
-function cubicBezierDeriv(t, p0, p1, p2, p3) {
-  return 3*Math.pow(1-t,2)*(p1-p0) + 6*(1-t)*t*(p2-p1) + 3*t*t*(p3-p2);
+// ── posture analysis ───────────────────────────────────────────
+function calcScore(upper, lower) {
+  const thresh = parseInt(document.getElementById('threshSlider').value);
+  return Math.max(0, Math.round(100 - (Math.abs(upper - lower) / (thresh * 2)) * 100));
 }
 
 function analyzePosture(upper, lower) {
   const thresh = parseInt(document.getElementById('threshSlider').value);
-  const diff = Math.abs(upper - lower);
-  const pct  = Math.min(100, Math.round((diff / (thresh * 2)) * 100));
+  const diff   = Math.abs(upper - lower);
+  const pct    = Math.min(100, Math.round((diff / (thresh * 2)) * 100));
+
   document.getElementById('upperVal').textContent = upper.toFixed(1) + '°';
   document.getElementById('lowerVal').textContent = lower.toFixed(1) + '°';
-  document.getElementById('diffVal').textContent  = diff.toFixed(1) + '°';
+  document.getElementById('diffVal').textContent  = diff.toFixed(1)  + '°';
   document.getElementById('diffPct').textContent  = pct + '%';
-  const bar  = document.getElementById('diffBar');
+
+  const bar    = document.getElementById('diffBar');
   bar.style.width = pct + '%';
+
   const status = document.getElementById('postureStatus');
   const stText = document.getElementById('statusText');
   const stSub  = document.getElementById('statusSub');
   const uVal   = document.getElementById('upperVal');
   const lVal   = document.getElementById('lowerVal');
   const dVal   = document.getElementById('diffVal');
+
   let isBad = false;
-  if(diff > thresh) {
+
+  if (diff > thresh) {
     isBad = true;
     status.className = 'posture-status bad';
     stText.textContent = 'Bad posture — spine curving';
-    stSub.textContent = upper > lower ? `Upper back is ${diff.toFixed(1)}° more forward than lower` : `Lower back is ${diff.toFixed(1)}° more forward than upper`;
+    stSub.textContent  = upper > lower
+      ? `Upper back is ${diff.toFixed(1)}° more forward than lower`
+      : `Lower back is ${diff.toFixed(1)}° more forward than upper`;
     bar.style.background = '#f85149';
-    uVal.className = 'angle-val bad'; lVal.className = 'angle-val bad'; dVal.className = 'angle-val bad';
+    uVal.className = lVal.className = dVal.className = 'angle-val bad';
     const now = Date.now();
-    if(now - lastAlertTime > 7000 && document.getElementById('chkBadPosture').checked) {
+    if (now - lastAlertTime > 7000 && document.getElementById('chkBadPosture').checked) {
       lastAlertTime = now;
-      alertCount++;
-      sendNotification('alert', 'Bad posture detected', `Spinal divergence ${diff.toFixed(1)}° exceeds ${thresh}° threshold`);
+      sendNotification('alert', 'Bad posture detected',
+        `Spinal divergence ${diff.toFixed(1)}° exceeds ${thresh}° threshold`);
     }
-  } else if(diff > thresh * 0.6) {
+  } else if (diff > thresh * 0.6) {
     status.className = 'posture-status warn';
     stText.textContent = 'Watch your posture';
     stSub.textContent  = `Divergence ${diff.toFixed(1)}° — approaching threshold`;
     bar.style.background = '#f0883e';
-    uVal.className = 'angle-val warn'; lVal.className = 'angle-val warn'; dVal.className = 'angle-val warn';
+    uVal.className = lVal.className = dVal.className = 'angle-val warn';
     const now = Date.now();
-    if(now - lastAlertTime > 7000 && document.getElementById('chkBadPosture').checked) {
+    if (now - lastAlertTime > 7000 && document.getElementById('chkBadPosture').checked) {
       lastAlertTime = now;
-      sendNotification('warn', 'Posture warning', `Divergence ${diff.toFixed(1)}° is approaching the ${thresh}° threshold`);
+      sendNotification('warn', 'Posture warning',
+        `Divergence ${diff.toFixed(1)}° approaching the ${thresh}° threshold`);
     }
   } else {
     status.className = 'posture-status';
     stText.textContent = 'Good — spine aligned';
     stSub.textContent  = 'Keep it up!';
     bar.style.background = '#3fb950';
-    uVal.className = 'angle-val'; lVal.className = 'angle-val'; dVal.className = 'angle-val';
-  }
-  if(isBad && !wasPostureBad) { wasPostureBad = true; }
-  if(!isBad && wasPostureBad) {
-    wasPostureBad = false;
-    if(document.getElementById('chkGoodReturn').checked) {
-      sendNotification('ok', 'Posture corrected', 'Your spine is back in alignment');
-    }
+    uVal.className = lVal.className = dVal.className = 'angle-val';
   }
 
+  if (isBad && !wasPostureBad) { wasPostureBad = true; }
+  if (!isBad && wasPostureBad) {
+    wasPostureBad = false;
+    if (document.getElementById('chkGoodReturn').checked)
+      sendNotification('ok', 'Posture corrected', 'Your spine is back in alignment');
+  }
 }
 
 function ingest(upper, lower) {
   upper = parseFloat(upper.toFixed(1));
   lower = parseFloat(lower.toFixed(1));
-  upperHistory.push(upper); if(upperHistory.length>MAX_PTS) upperHistory.shift();
-  lowerHistory.push(lower); if(lowerHistory.length>MAX_PTS) lowerHistory.shift();
   const score = calcScore(upper, lower);
-  scoreHistory.push(score); if(scoreHistory.length>MAX_PTS) scoreHistory.shift();
+  scoreHistory.push(score); if (scoreHistory.length > MAX_PTS) scoreHistory.shift();
   rawScoreLog.push(score);
+  ensureChart();
   updateChart();
   updateScoreDisplay(score);
   updateSpine(upper, lower);
   analyzePosture(upper, lower);
-  document.getElementById('liveDot').style.opacity = '1';
+  const dot = document.getElementById('liveDot');
+  dot.style.opacity = '1'; dot.classList.add('pulsing');
 }
 
 function updateThresh() {
-  const t = document.getElementById('threshSlider').value;
-  document.getElementById('threshDisplay').textContent = t + '°';
-  updateChart();
+  document.getElementById('threshDisplay').textContent =
+    document.getElementById('threshSlider').value + '°';
 }
 
+// ── bluetooth ──────────────────────────────────────────────────
 async function connectBluetooth() {
-  if(!navigator.bluetooth){ showToast('alert','Web Bluetooth not supported','Use Chrome or Edge on desktop'); return; }
+  if (!navigator.bluetooth) {
+    showToast('alert', 'Web Bluetooth not supported', 'Use Chrome or Edge on desktop');
+    return;
+  }
   const btn = document.getElementById('connectBtn');
   btn.disabled = true; btn.textContent = 'Scanning...';
   try {
-    btDevice = await navigator.bluetooth.requestDevice({ acceptAllDevices:true, optionalServices:[SERVICE_UUID] });
+    btDevice = await navigator.bluetooth.requestDevice({
+      acceptAllDevices: true,
+      optionalServices: [SERVICE_UUID]
+    });
     btDevice.addEventListener('gattserverdisconnected', onDisconnected);
     const server = await btDevice.gatt.connect();
     try {
@@ -751,123 +792,72 @@ async function connectBluetooth() {
       char.addEventListener('characteristicvaluechanged', onBtData);
       await char.startNotifications();
       btChar = char;
-    } catch(e) {}
+    } catch (e) {}
     onConnected(btDevice.name || btDevice.id);
-  } catch(e) {
+  } catch (e) {
     btn.disabled = false; btn.textContent = 'Connect';
-    if(e.name !== 'NotFoundError') showToast('alert','Connection failed', e.message);
+    if (e.name !== 'NotFoundError') showToast('alert', 'Connection failed', e.message);
   }
 }
 
 function onConnected(name) {
   document.getElementById('deviceName').textContent = name;
-  document.getElementById('deviceAddr').textContent = 'BLE · Connected · Dual gyros expected';
-  document.getElementById('statusBadge').className = 'badge badge-connected';
+  document.getElementById('deviceAddr').textContent = 'BLE · Connected · Dual gyros active';
+  document.getElementById('statusBadge').className   = 'badge badge-connected';
   document.getElementById('statusBadge').textContent = 'CONNECTED';
-  document.getElementById('connectBtn').style.display = 'none';
+  document.getElementById('connectBtn').style.display    = 'none';
   document.getElementById('disconnectBtn').style.display = '';
+  document.getElementById('motorBtn').style.display      = '';
+  document.getElementById('rezeroBtn').style.display     = '';
+  document.getElementById('ctrlDivider').style.display   = '';
   document.getElementById('liveDot').style.opacity = '1';
-  document.getElementById('bleCtrlHint').textContent = 'BLE connected — commands active';
-  if(document.getElementById('chkConnection').checked)
-    sendNotification('ok','ESP32 Connected', name + ' is online');
+  document.getElementById('liveDot').classList.add('pulsing');
+  if (document.getElementById('chkConnection').checked)
+    sendNotification('ok', 'ESP32 Connected', name + ' is online');
 }
 
 function onDisconnected() {
   btChar = null;
   document.getElementById('deviceName').textContent = 'Device disconnected';
   document.getElementById('deviceAddr').textContent = 'Connection lost — click Connect to reconnect';
-  document.getElementById('statusBadge').className = 'badge badge-disconnected';
+  document.getElementById('statusBadge').className   = 'badge badge-disconnected';
   document.getElementById('statusBadge').textContent = 'DISCONNECTED';
-  document.getElementById('connectBtn').style.display = '';
-  document.getElementById('connectBtn').disabled = false;
-  document.getElementById('connectBtn').textContent = 'Connect';
-  document.getElementById('disconnectBtn').style.display = 'none';
-  document.getElementById('liveDot').style.opacity = '.3';
-  document.getElementById('bleCtrlHint').textContent = 'Connect via BLE to send commands';
-  if(document.getElementById('chkConnection').checked)
-    sendNotification('alert','ESP32 Disconnected','Connection was lost');
+  document.getElementById('connectBtn').style.display     = '';
+  document.getElementById('connectBtn').disabled          = false;
+  document.getElementById('connectBtn').textContent       = 'Connect';
+  document.getElementById('disconnectBtn').style.display  = 'none';
+  document.getElementById('motorBtn').style.display       = 'none';
+  document.getElementById('rezeroBtn').style.display      = 'none';
+  document.getElementById('ctrlDivider').style.display    = 'none';
+  document.getElementById('liveDot').style.opacity = '.25';
+  document.getElementById('liveDot').classList.remove('pulsing');
+  if (document.getElementById('chkConnection').checked)
+    sendNotification('alert', 'ESP32 Disconnected', 'Connection was lost');
 }
 
 function disconnectBluetooth() {
-  if(btDevice && btDevice.gatt.connected) btDevice.gatt.disconnect();
+  if (btDevice && btDevice.gatt.connected) btDevice.gatt.disconnect();
 }
 
 function onBtData(event) {
   const text = new TextDecoder().decode(event.target.value).trim();
   try {
     const obj = JSON.parse(text);
-    if(obj.upper !== undefined && obj.lower !== undefined) ingest(obj.upper, obj.lower);
-  } catch(e) {
+    if (obj.upper !== undefined && obj.lower !== undefined) ingest(obj.upper, obj.lower);
+  } catch (e) {
     const parts = text.split(',');
-    if(parts.length === 2) ingest(parseFloat(parts[0]), parseFloat(parts[1]));
+    if (parts.length === 2) ingest(parseFloat(parts[0]), parseFloat(parts[1]));
   }
 }
 
-function sendNotification(type, title, detail) {
-  document.getElementById('emptyNotif').style.display = 'none';
-  const log  = document.getElementById('notifList');
-  const time = new Date().toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-  const el   = document.createElement('div');
-  el.className = `notif-item ${type}`;
-  el.innerHTML = `<div class="notif-dot"></div><div class="notif-body"><div class="notif-title">${title}</div><div class="notif-detail">${detail} · ${time}</div></div>`;
-  log.insertBefore(el, log.firstChild);
-  while(log.children.length > 40) log.removeChild(log.lastChild);
-  const countEl = document.getElementById('notifCount');
-  countEl.textContent = ((parseInt(countEl.textContent) || 0) + 1) + ' sent';
-  showToast(type, title, detail);
-  if(Notification.permission === 'granted') {
-    try { new Notification('Posture Monitor · ' + title, { body: detail }); } catch(e){}
-  }
-}
-
-function showToast(type, title, msg) {
-  const el = document.createElement('div');
-  el.className = `toast ${type}`;
-  el.innerHTML = `<div class="toast-body"><div class="toast-title">${title}</div><div class="toast-msg">${msg}</div></div><button class="toast-close" onclick="this.parentElement.remove()">&#x2715;</button>`;
-  document.getElementById('toastContainer').appendChild(el);
-  setTimeout(() => { if(el.parentElement){ el.style.opacity='0'; el.style.transform='translateX(16px)'; el.style.transition='all .3s'; setTimeout(()=>el.remove(),300); } }, 5000);
-}
-
-async function requestNotifPerm() {
-  const p = await Notification.requestPermission();
-  if(p==='granted') document.getElementById('permBanner').classList.remove('show');
-  else showToast('warn','Permission denied','Check notification settings');
-}
-
-if(Notification.permission !== 'granted') document.getElementById('permBanner').classList.add('show');
-
-function clearAll() {
-  document.getElementById('notifList').innerHTML = '<div class="empty-state" id="emptyNotif">No notifications yet — monitoring posture…</div>';
-  document.getElementById('notifCount').textContent = '0 sent';
-  packets=0; alertCount=0; goodCount=0; wasPostureBad=false; lastAlertTime=0;
-  upperHistory = new Array(MAX_PTS).fill(0);
-  lowerHistory = new Array(MAX_PTS).fill(0);
-  scoreHistory = new Array(MAX_PTS).fill(null);
-  rawScoreLog  = [];
-
-  document.getElementById('historyScore').textContent = '—';
-  document.getElementById('historyScore').className = 'history-score-val good';
-  document.getElementById('historyTrend').textContent = '—';
-  document.getElementById('historyTrend').className = 'trend-val trend-flat';
-  updateChart();
-}
-
-updateSpine(0, 0);
-
-let motorEnabled = true;
-
+// ── device commands ────────────────────────────────────────────
 async function sendBleCommand(obj) {
-  if (!btChar) {
-    showToast('warn', 'Not connected', 'Connect to an ESP32 via BLE first');
-    return false;
-  }
+  if (!btChar) { showToast('warn', 'Not connected', 'Connect to an ESP32 first'); return false; }
   try {
     const bytes = new TextEncoder().encode(JSON.stringify(obj));
-    if (typeof btChar.writeValueWithoutResponse === 'function') {
-      await btChar.writeValueWithoutResponse(bytes);
-    } else {
-      await btChar.writeValue(bytes);
-    }
+    typeof btChar.writeValueWithoutResponse === 'function'
+      ? await btChar.writeValueWithoutResponse(bytes)
+      : await btChar.writeValue(bytes);
     return true;
   } catch (e) {
     showToast('alert', 'BLE write failed', e.message);
@@ -878,46 +868,149 @@ async function sendBleCommand(obj) {
 async function toggleMotor() {
   motorEnabled = !motorEnabled;
   const btn = document.getElementById('motorBtn');
-  if (motorEnabled) {
-    btn.textContent = 'Motor: ON';
-    btn.className   = 'btn btn-motor-on';
-  } else {
-    btn.textContent = 'Motor: OFF';
-    btn.className   = 'btn btn-motor-off';
-  }
+  btn.textContent = motorEnabled ? 'Motor: ON'  : 'Motor: OFF';
+  btn.className   = motorEnabled ? 'btn btn-motor-on' : 'btn btn-motor-off';
   const ok = await sendBleCommand({ motor: motorEnabled });
   if (ok) {
     sendNotification(
       motorEnabled ? 'ok' : 'warn',
-      motorEnabled ? 'Motor enabled' : 'Motor disabled',
-      motorEnabled ? 'Vibration alerts are now active on ESP32' : 'Vibration alerts muted on ESP32'
+      motorEnabled ? 'Motor enabled'  : 'Motor disabled',
+      motorEnabled ? 'Vibration alerts active on ESP32' : 'Vibration alerts muted on ESP32'
     );
   } else {
     motorEnabled = !motorEnabled;
-    btn.textContent = motorEnabled ? 'Motor: ON' : 'Motor: OFF';
+    btn.textContent = motorEnabled ? 'Motor: ON'  : 'Motor: OFF';
     btn.className   = motorEnabled ? 'btn btn-motor-on' : 'btn btn-motor-off';
   }
 }
 
 async function rezeroIMU() {
   const btn = document.getElementById('rezeroBtn');
-  btn.textContent = 'Calibrating...';
-  btn.disabled    = true;
+  btn.textContent = 'Calibrating...'; btn.disabled = true;
   const ok = await sendBleCommand({ rezero: true });
-  if (ok) {
-    sendNotification('ok', 'IMUs re-zeroed', 'Current orientation set as new reference on ESP32');
-    btn.textContent = 'Zeroed';
-    btn.classList.add('btn-rezero-flash');
-    setTimeout(() => {
-      btn.classList.remove('btn-rezero-flash');
-      btn.textContent = 'Re-zero IMUs';
-      btn.disabled    = false;
-    }, 1200);
-  } else {
-    btn.textContent = 'Re-zero IMUs';
-    btn.disabled    = false;
+  if (ok) sendNotification('ok', 'IMUs re-zeroed', 'Current orientation set as new reference');
+  btn.textContent = 'Re-zero IMUs'; btn.disabled = false;
+}
+
+// ── demo mode ──────────────────────────────────────────────────
+// Scenarios: good sitting → gradual slouch → full bad → recovery → good again
+const demoScenarios = [
+  { duration: 15, uFn: t => 2  + Math.sin(t * 0.5) * 2,          lFn: t => 1  + Math.sin(t * 0.4 + 0.5) * 1.5 },  // good
+  { duration: 20, uFn: t => 6  + t * 0.6 + Math.sin(t * 0.7) * 2, lFn: t => 2  + Math.sin(t * 0.3) * 2 },           // slouching
+  { duration: 12, uFn: t => 18 + Math.sin(t * 0.8) * 3,           lFn: t => 4  + Math.sin(t * 0.5) * 2 },           // bad
+  { duration: 14, uFn: t => Math.max(2, 18 - t * 1.1 + Math.sin(t * 0.5) * 2), lFn: t => Math.max(1, 4 - t * 0.15) }, // recovering
+  { duration: 20, uFn: t => 3  + Math.sin(t * 0.6) * 2.5,         lFn: t => 2  + Math.sin(t * 0.5) * 2 },           // good again
+];
+
+function toggleDemo() {
+  demoRunning ? stopDemo() : startDemo();
+}
+
+function startDemo() {
+  if (btDevice && btDevice.gatt.connected) btDevice.gatt.disconnect();
+  demoRunning = true; demoPhase = 0; demoTick = 0;
+  document.getElementById('demoBtn').textContent = 'Stop demo';
+  document.getElementById('demoBtn').className   = 'btn btn-demo-stop';
+  document.getElementById('deviceName').textContent = 'Demo Device (simulated)';
+  document.getElementById('deviceAddr').textContent = 'Demo mode — simulating live ESP32 data';
+  document.getElementById('statusBadge').className   = 'badge badge-demo';
+  document.getElementById('statusBadge').textContent = 'DEMO';
+  document.getElementById('motorBtn').style.display    = '';
+  document.getElementById('rezeroBtn').style.display   = '';
+  document.getElementById('ctrlDivider').style.display = '';
+  document.getElementById('liveDot').style.opacity = '1';
+  document.getElementById('liveDot').classList.add('pulsing');
+  if (document.getElementById('chkConnection').checked)
+    sendNotification('ok', 'Demo started', 'Simulating posture data from ESP32');
+  demoInterval = setInterval(runDemoTick, 500);
+}
+
+function stopDemo() {
+  clearInterval(demoInterval);
+  demoRunning = false;
+  document.getElementById('demoBtn').textContent = 'Demo';
+  document.getElementById('demoBtn').className   = 'btn btn-demo';
+  document.getElementById('deviceName').textContent = 'No device paired';
+  document.getElementById('deviceAddr').textContent = 'Click "Connect" to pair via Bluetooth';
+  document.getElementById('statusBadge').className   = 'badge badge-disconnected';
+  document.getElementById('statusBadge').textContent = 'DISCONNECTED';
+  document.getElementById('motorBtn').style.display    = 'none';
+  document.getElementById('rezeroBtn').style.display   = 'none';
+  document.getElementById('ctrlDivider').style.display = 'none';
+  document.getElementById('liveDot').style.opacity = '.25';
+  document.getElementById('liveDot').classList.remove('pulsing');
+  sendNotification('warn', 'Demo ended', 'Connect a real device to continue monitoring');
+  updateSpine(0, 0);
+}
+
+function runDemoTick() {
+  let scene = demoScenarios[demoPhase % demoScenarios.length];
+  if (demoTick >= scene.duration) {
+    demoTick = 0;
+    demoPhase++;
+    scene = demoScenarios[demoPhase % demoScenarios.length];
+  }
+  const upper = Math.max(0, scene.uFn(demoTick));
+  const lower = Math.max(0, scene.lFn(demoTick));
+  ingest(upper, lower);
+  demoTick++;
+}
+
+// ── notifications ──────────────────────────────────────────────
+function sendNotification(type, title, detail) {
+  document.getElementById('emptyNotif').style.display = 'none';
+  const log  = document.getElementById('notifList');
+  const time = new Date().toLocaleTimeString('en', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+  const el   = document.createElement('div');
+  el.className = `notif-item ${type}`;
+  el.innerHTML = `<div class="notif-dot"></div><div class="notif-body"><div class="notif-title">${title}</div><div class="notif-detail">${detail} · ${time}</div></div>`;
+  log.insertBefore(el, log.firstChild);
+  while (log.children.length > 40) log.removeChild(log.lastChild);
+  const countEl = document.getElementById('notifCount');
+  countEl.textContent = ((parseInt(countEl.textContent) || 0) + 1) + ' sent';
+  showToast(type, title, detail);
+  if (Notification.permission === 'granted') {
+    try { new Notification('Posture Monitor · ' + title, { body: detail }); } catch(e) {}
   }
 }
+
+function showToast(type, title, msg) {
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.innerHTML = `<div class="toast-body"><div class="toast-title">${title}</div><div class="toast-msg">${msg}</div></div><button class="toast-close" onclick="this.parentElement.remove()">&#x2715;</button>`;
+  document.getElementById('toastContainer').appendChild(el);
+  setTimeout(() => {
+    if (el.parentElement) {
+      el.style.opacity = '0'; el.style.transform = 'translateX(16px)'; el.style.transition = 'all .3s';
+      setTimeout(() => el.remove(), 300);
+    }
+  }, 5000);
+}
+
+async function requestNotifPerm() {
+  const p = await Notification.requestPermission();
+  if (p === 'granted') document.getElementById('permBanner').classList.remove('show');
+  else showToast('warn', 'Permission denied', 'Check your browser notification settings');
+}
+
+// ── clear ──────────────────────────────────────────────────────
+function clearAll() {
+  document.getElementById('notifList').innerHTML =
+    '<div class="empty-state" id="emptyNotif">No notifications yet — monitoring posture…</div>';
+  document.getElementById('notifCount').textContent = '0 sent';
+  wasPostureBad = false; lastAlertTime = 0;
+  scoreHistory = new Array(MAX_PTS).fill(null);
+  rawScoreLog  = [];
+  document.getElementById('historyScore').textContent = '—';
+  document.getElementById('historyScore').className   = 'history-score-val good';
+  document.getElementById('historyTrend').textContent = '—';
+  document.getElementById('historyTrend').className   = 'trend-val trend-flat';
+  if (chart) updateChart();
+}
+
+// ── init ───────────────────────────────────────────────────────
+if (Notification.permission !== 'granted') document.getElementById('permBanner').classList.add('show');
+updateSpine(0, 0);
 </script>
 </body>
 </html>
